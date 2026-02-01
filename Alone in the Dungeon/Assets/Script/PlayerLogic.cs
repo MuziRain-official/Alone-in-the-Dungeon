@@ -3,24 +3,48 @@
  */
 
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
 
 public class PlayerLogic : MonoBehaviour
 {
-    public float moveSpeed;
-    private Vector2 m_currentMovementInput; //存储当前输入向量
+    [Header("移动设置")]
+    [Tooltip("移动速度")] 
+    public float moveSpeed = 5f;
+    [Tooltip("是否归一化输入向量")]
+    public bool normalizeInput = true;
+    
+    [Header("物理设置")]
+    [Tooltip("刚体阻力")] 
+    public float drag = 5f;
+    [Tooltip("是否冻结旋转")]
+    public bool freezeRotation = true;
+    
+    private Vector2 m_currentMovementInput;
+    private Rigidbody2D m_rb;
 
-    //供PlayerInput组件调用的方法
+    [System.Obsolete]
+    void Start()
+    {
+        m_rb = GetComponent<Rigidbody2D>();
+    }
+
+    // 供PlayerInput组件调用的方法
     public void OnMove(InputAction.CallbackContext context)
     {
-        // 当按键按下或松开时，此方法会被调用
         m_currentMovementInput = context.ReadValue<Vector2>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        //在Update中应用持续移动
-        Vector3 movement = new Vector3(m_currentMovementInput.x, m_currentMovementInput.y, 0) * moveSpeed * Time.deltaTime;
-        transform.position += movement;
+        Vector2 input = m_currentMovementInput;
+        
+        // 处理斜向移动速度问题
+        if (normalizeInput && input.magnitude > 1f)
+        {
+            input = input.normalized;
+        }
+        
+        Vector2 movement = input * moveSpeed;
+        m_rb.linearVelocity = movement;
     }
 }
