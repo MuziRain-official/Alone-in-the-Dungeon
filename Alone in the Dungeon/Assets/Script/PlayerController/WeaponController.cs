@@ -1,5 +1,5 @@
 /* WeaponAimBasic.cs
- * 简化的武器朝向脚本
+ * 基础武器瞄准脚本，控制武器朝向鼠标位置
  */
 
 using UnityEngine;
@@ -23,7 +23,7 @@ namespace PlayerController
             // 更新武器朝向
             UpdateWeaponRotation();
             
-            // 修复翻转：如果角色翻转了，武器也翻转来"正过来"
+            // 如果角色翻转了，武器也翻转来"正过来"
             transform.localScale = m_playerTransform.localScale.x < 0 
                 ? new Vector3(-1, -1, 1) 
                 : Vector3.one;
