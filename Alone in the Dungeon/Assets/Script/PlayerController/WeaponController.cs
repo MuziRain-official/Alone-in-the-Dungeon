@@ -1,5 +1,5 @@
 /* WeaponAimBasic.cs
- * 基础武器瞄准脚本，控制武器朝向鼠标位置
+ * 基础武器瞄准脚本
  */
 
 using UnityEngine;
