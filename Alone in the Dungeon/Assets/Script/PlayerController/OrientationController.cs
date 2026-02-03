@@ -1,4 +1,4 @@
-/* MovementController.cs 
+/* OrientationController.cs 
 * 角色朝向控制脚本
 */
 using UnityEngine;

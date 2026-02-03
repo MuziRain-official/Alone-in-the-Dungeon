@@ -1,4 +1,4 @@
-/* MovementController.cs 
+/* AnimationController.cs 
 * 角色动画控制脚本
 */
 using UnityEngine;
