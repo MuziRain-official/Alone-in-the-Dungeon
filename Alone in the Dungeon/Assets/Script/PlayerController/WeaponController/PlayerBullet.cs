@@ -4,6 +4,8 @@ public class PlayerBullet : MonoBehaviour
 {
     [Header("子弹速度")]
     public float speed = 10f;
+    [Header("子弹碰撞特效")]
+    public GameObject hitEffect;
     private Rigidbody2D rb;
     void Start()
     {
@@ -21,5 +23,14 @@ public class PlayerBullet : MonoBehaviour
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 碰到敌人或障碍物时销毁子弹
+        if (collision.CompareTag("Enemy") || collision.CompareTag("Obstacle"))
+        {
+            Destroy(gameObject);
+            Instantiate(hitEffect, transform.position, transform.rotation);
+        }
     }
 }
