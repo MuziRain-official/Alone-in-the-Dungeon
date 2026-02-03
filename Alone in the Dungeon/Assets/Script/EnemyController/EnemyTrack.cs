@@ -5,12 +5,17 @@ namespace EnemyController
 {
     public class EnemyTrack : MonoBehaviour
     {
+        [Header("敌人生命值")]
+        public int health = 20;
         [Header("敌人移动速度")]
         public float moveSpeed = 3f;
         [Header("追踪更新间隔")]
         public float updateInterval = 0.5f;
         [Header("追踪范围")]
         public float trackingRange = 5f;
+        [Header("敌人动画组件")]
+        public Animator animator;
+        private bool isPlayerInRange = false;
         
         private Rigidbody2D rb;
         private Transform playerTransform;
@@ -20,6 +25,8 @@ namespace EnemyController
         {
             rb = GetComponent<Rigidbody2D>();
             rb.linearDamping = 5f;
+
+            animator = GetComponent<Animator>();
             
             // 通过PlayerManager单例获取玩家Transform
             if (PlayerManager.Instance != null)
@@ -51,12 +58,39 @@ namespace EnemyController
                 {
                     Vector2 direction = (playerTransform.position - transform.position).normalized;
                     rb.linearVelocity = direction * moveSpeed;
+                    isPlayerInRange = true;
                 }
             }
             else
             {
                 // 如果没有找到玩家，停止移动
                 rb.linearVelocity = Vector2.zero;
+                isPlayerInRange = false;
+            }
+        }
+
+        void UpdateAnimation()
+        {
+            if (animator != null)
+            {
+                // 只有当玩家在范围内且正在移动时才播放移动动画
+                bool shouldMove = isPlayerInRange && playerTransform != null;
+                animator.SetBool("isMoving", shouldMove);
+            }
+        }
+
+        public void TakeDamage(int damage)
+        {
+            health -= damage;
+            animator.SetTrigger("Hurt");
+            if (health <= 0)
+            {
+                // 停止移动
+                rb.linearVelocity = Vector2.zero;
+                // 触发死亡动画
+                animator.SetTrigger("Death");
+                // 延迟1秒销毁
+                Destroy(gameObject, 1f);
             }
         }
     }

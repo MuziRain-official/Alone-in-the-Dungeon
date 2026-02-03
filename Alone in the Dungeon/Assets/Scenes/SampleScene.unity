@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 20524811}
   - component: {fileID: 20524810}
   - component: {fileID: 20524812}
+  - component: {fileID: 20524813}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
@@ -147,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 20524807}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.17, y: 0, z: 0}
+  m_LocalPosition: {x: -4.38, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -241,7 +242,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyTrack
   moveSpeed: 2
   updateInterval: 1
-  trackingRange: 5
+  trackingRange: 4
+  animator: {fileID: 20524813}
+--- !u!95 &20524813
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20524807}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b4ea759e774025a4ba0efa4cd813c973, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &376853236 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8041491002173428630, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}

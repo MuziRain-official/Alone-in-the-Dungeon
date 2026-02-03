@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
 {
+    [Header("子弹伤害")]
+    public int damage = 5;
     [Header("子弹速度")]
     public float speed = 10f;
     [Header("子弹碰撞特效")]
@@ -31,6 +33,7 @@ public class PlayerBullet : MonoBehaviour
         {
             Destroy(gameObject);
             Instantiate(hitEffect, transform.position, transform.rotation);
+            collision.GetComponent<EnemyController.EnemyTrack>().TakeDamage(damage);
         }
     }
 }
