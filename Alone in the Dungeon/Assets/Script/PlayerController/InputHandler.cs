@@ -9,16 +9,10 @@ namespace PlayerController
     public class InputHandler : MonoBehaviour
     {
         public Vector2 MoveInput { get; private set; }
-        public Vector2 MousePosition { get; private set; }
-        
+             
         public void OnMove(InputAction.CallbackContext context)
         {
             MoveInput = context.ReadValue<Vector2>();
-        }
-        
-        public void OnMousePosition(InputAction.CallbackContext context)
-        {
-            MousePosition = context.ReadValue<Vector2>();
         }
     }
 }

@@ -21,19 +21,11 @@ namespace PlayerController
         {
             if (playerAnimator == null || m_movementController == null) return;
             
-            Vector2 velocity = m_movementController.GetCurrentVelocity();
+            Vector2 velocity = m_movementController.GetCurrentVelocity();//获取当前速度
             bool isMoving = velocity.magnitude > 0.1f;
             
             playerAnimator.SetBool("isMoving", isMoving);
 
-        }
-        
-        public void PlayAnimation(string animationName)
-        {
-            if (playerAnimator != null)
-            {
-                playerAnimator.Play(animationName);
-            }
         }
     }
 }

@@ -7,15 +7,9 @@ using UnityEngine.InputSystem;
 namespace PlayerController
 {
     public class OrientationController : MonoBehaviour
-    {
-        [Header("朝向设置")]
-        public bool faceMouse = true;
-        
+    {        
         private Camera m_mainCamera;
         private InputHandler m_inputHandler;
-        
-        public bool IsFacingRight { get; private set; } = true;
-        public System.Action<bool> OnDirectionChanged; // 事件：方向改变时触发
         
         void Start()
         {
@@ -25,13 +19,13 @@ namespace PlayerController
         
         void Update()
         {
-            if (faceMouse && m_inputHandler != null && m_mainCamera != null)
+            if (m_inputHandler != null && m_mainCamera != null)
             {
                 FaceMouseDirection();
             }
         }
         
-        private void FaceMouseDirection()
+        private void FaceMouseDirection()//使角色面向鼠标方向
         {
             Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
             Vector3 mousePosition = m_mainCamera.ScreenToWorldPoint(
@@ -46,16 +40,6 @@ namespace PlayerController
             else if (relativeMousePosition.x < 0)
             {
                 transform.localScale = new Vector3(-1, 1, 1);
-            }
-        }
-        
-        public void SetDirection(bool faceRight)
-        {
-            if (faceRight != IsFacingRight)
-            {
-                IsFacingRight = faceRight;
-                transform.localScale = new Vector3(IsFacingRight ? 1 : -1, 1, 1);
-                OnDirectionChanged?.Invoke(IsFacingRight);
             }
         }
     }

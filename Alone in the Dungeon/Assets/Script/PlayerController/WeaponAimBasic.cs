@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace PlayerController
 {
-    public class WeaponController : MonoBehaviour
+    public class WeaponAimBasic : MonoBehaviour
     {
         private Camera m_mainCamera;
         private Transform m_playerTransform;

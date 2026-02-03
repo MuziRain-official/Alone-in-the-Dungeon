@@ -293,7 +293,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 0000000097c69090b1e5bc6d
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -448,8 +448,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1841096113
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -476,6 +476,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &930522620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 930522621}
+  m_Layer: 3
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &930522621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930522620}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.41300002, y: 0.065000005, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1188579929}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &974812297
 GameObject:
@@ -585,8 +616,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1841096113
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -614,6 +645,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1188579928 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6779210345545720734, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+  m_PrefabInstance: {fileID: 707293858561521635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1188579929 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3665541784166821404, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+  m_PrefabInstance: {fileID: 707293858561521635}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1188579931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188579928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea1e23336a9e8bb419e6140b7ae3d3a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponFire
+  bullet: {fileID: 289860538048460109, guid: af13ef9c55ad7c645aa9fe367a2af77f, type: 3}
+  firePoint: {fileID: 930522621}
 --- !u!1001 &707293858561521635
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -622,9 +677,49 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 183921183121022763, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 183921183121022763, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 183921183121022763, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1869560169
+      objectReference: {fileID: 0}
+    - target: {fileID: 837058638314583814, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4595729291549365622, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4595729291549365622, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1869560169
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066993119374211133, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6093473842715156256, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6779210345545720734, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8041491002173428630, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041491002173428630, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8526347924884143493, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -666,10 +761,44 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8777077545754910090, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777077545754910090, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777077545754910090, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1188579931}
+    - target: {fileID: 8777077545754910090, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777077545754910090, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnFire
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777077545754910090, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: WeaponFire, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777077545754910090, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3665541784166821404, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 930522621}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6779210345545720734, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1188579931}
   m_SourcePrefab: {fileID: 100100000, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

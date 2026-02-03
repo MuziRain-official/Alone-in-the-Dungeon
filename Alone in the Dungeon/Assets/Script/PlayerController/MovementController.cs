@@ -9,7 +9,6 @@ namespace PlayerController
     {
         [Header("移动设置")]
         public float moveSpeed = 5f;
-        public bool normalizeInput = true;
         
         private Rigidbody2D m_rb;
         private InputHandler m_inputHandler;
@@ -20,13 +19,13 @@ namespace PlayerController
             m_inputHandler = GetComponent<InputHandler>();
         }
         
-        void FixedUpdate()
+        void FixedUpdate()//物理更新
         {
             if (m_inputHandler == null) return;
             
             Vector2 input = m_inputHandler.MoveInput;
             
-            if (normalizeInput && input.magnitude > 1f)
+            if (input.magnitude > 1f)
             {
                 input = input.normalized;
             }
@@ -35,7 +34,7 @@ namespace PlayerController
             m_rb.linearVelocity = movement;
         }
         
-        public Vector2 GetCurrentVelocity()
+        public Vector2 GetCurrentVelocity()//获取当前速度
         {
             return m_rb != null ? m_rb.linearVelocity : Vector2.zero;
         }
