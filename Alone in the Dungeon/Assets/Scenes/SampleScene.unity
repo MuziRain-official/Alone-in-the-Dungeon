@@ -240,10 +240,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dab53acaeb2174fb6c9d8e60bd666a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyTrack
+  health: 20
   moveSpeed: 2
   updateInterval: 1
   trackingRange: 4
   animator: {fileID: 20524813}
+  deathEffect: {fileID: 5758735343913211798, guid: 1e55b363f4ac0cc4ea32c9159dbc8a88, type: 3}
 --- !u!95 &20524813
 Animator:
   serializedVersion: 7
