@@ -10,7 +10,8 @@ namespace EnemyController
         public float attackRange = 2f;
         public float attackCooldown = 2f;
         public float chargeSpeed = 8f;
-        
+        public float damagePerSecond = 20f; // 每秒伤害
+        public float contactDamageInterval = 0.5f; // 接触伤害间隔
         // 攻击事件
         public event System.Action OnAttackStart;
         public event System.Action OnAttackEnd;
@@ -18,12 +19,12 @@ namespace EnemyController
         private Transform playerTransform;
         private Rigidbody2D rb;
         private bool isAttacking;
+        private float lastDamageTime; // 上次造成伤害的时间
         
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
             
-            // 使用PlayerManager单例获取玩家Transform
             if (PlayerManager.Instance != null)
             {
                 playerTransform = PlayerManager.Instance.PlayerTransform;
@@ -78,19 +79,42 @@ namespace EnemyController
         }
         
         // 碰撞检测（攻击玩家）
-        // 取消勾选敌人的"Is Trigger"，使用碰撞器而不是触发器
-
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (isAttacking && collision.gameObject.CompareTag("Player"))
             {
-                Debug.Log("Enemy attacked the player!");
+                DealDamage(collision.gameObject);
                 
                 // 立即停止冲撞
                 StopCoroutine(nameof(ChargeAttack));
                 rb.linearVelocity = Vector2.zero;
                 isAttacking = false;
                 OnAttackEnd?.Invoke();
+            }
+        }
+        
+        // 持续碰撞检测（当敌人和玩家保持接触时）
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            // 只有当敌人处于攻击状态时才造成伤害
+            if (isAttacking && collision.gameObject.CompareTag("Player"))
+            {
+                DealDamage(collision.gameObject);
+            }
+        }
+        
+        // 伤害处理方法
+        private void DealDamage(GameObject player)
+        {
+            // 检查伤害间隔，避免每帧都造成伤害
+            if (Time.time - lastDamageTime >= contactDamageInterval)
+            {
+                if (PlayerHealth.Instance != null)
+                {
+                    PlayerHealth.Instance.TakeDamage(10f);
+                    Debug.Log($"Enemy dealt damage to player! Time: {Time.time}");
+                }
+                lastDamageTime = Time.time;
             }
         }
         

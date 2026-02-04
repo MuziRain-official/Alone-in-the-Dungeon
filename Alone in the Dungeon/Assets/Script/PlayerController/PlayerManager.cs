@@ -16,6 +16,7 @@ namespace PlayerController
         public MovementController movementController { get; private set; }
         public InputHandler inputHandler { get; private set; }
         public AnimationController animationController { get; private set; }
+        public PlayerHealth playerHealth { get; private set; }
         
         void Awake()
         {
@@ -37,6 +38,7 @@ namespace PlayerController
             movementController = GetComponent<MovementController>();
             inputHandler = GetComponent<InputHandler>();
             animationController = GetComponent<AnimationController>();
+            playerHealth = GetComponent<PlayerHealth>();
         }
         
         // 玩家Transform的便捷访问属性

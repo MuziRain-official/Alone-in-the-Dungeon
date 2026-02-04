@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e00f98104389f1418d1d35b79a68615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyHealth
-  maxHealth: 60
+  maxHealth: 50
   currentHealth: 0
 --- !u!114 &20524817
 MonoBehaviour:
@@ -327,6 +327,8 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 2
   chargeSpeed: 6
+  damagePerSecond: 20
+  contactDamageInterval: 0.5
 --- !u!1 &376853236 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8041491002173428630, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
@@ -344,6 +346,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5271600b0de3864d97c945b8758e39f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController.PlayerManager
+--- !u!114 &376853256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376853236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ae32f68453da34b8b98a380577f61f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHealth: 100
+  currentHealth: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,6 +1139,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8041491002173428630, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 376853246}
+    - targetCorrespondingSourceObject: {fileID: 8041491002173428630, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 376853256}
     - targetCorrespondingSourceObject: {fileID: 6779210345545720734, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1188579931}
