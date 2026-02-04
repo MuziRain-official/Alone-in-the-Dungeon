@@ -33,7 +33,12 @@ public class PlayerBullet : MonoBehaviour
         {
             Destroy(gameObject);
             Instantiate(hitEffect, transform.position, transform.rotation);
-            collision.GetComponent<EnemyController.EnemyTrack>().TakeDamage(damage);
+            // 调用接口对敌人造成伤害
+            var damageable = collision.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(damage);
+            }
         }
     }
 }

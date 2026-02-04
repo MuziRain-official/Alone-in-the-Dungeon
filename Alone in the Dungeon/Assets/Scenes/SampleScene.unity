@@ -132,6 +132,9 @@ GameObject:
   - component: {fileID: 20524810}
   - component: {fileID: 20524812}
   - component: {fileID: 20524813}
+  - component: {fileID: 20524814}
+  - component: {fileID: 20524816}
+  - component: {fileID: 20524815}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
@@ -240,12 +243,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dab53acaeb2174fb6c9d8e60bd666a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyTrack
-  health: 20
   moveSpeed: 2
-  updateInterval: 1
+  updateInterval: 2
   trackingRange: 4
-  animator: {fileID: 20524813}
-  deathEffect: {fileID: 5758735343913211798, guid: 1e55b363f4ac0cc4ea32c9159dbc8a88, type: 3}
 --- !u!95 &20524813
 Animator:
   serializedVersion: 7
@@ -268,6 +268,49 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &20524814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20524807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb69b8e9707523747ae5fbd67d3261a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyAnimator
+  animator: {fileID: 20524813}
+  deathEffect: {fileID: 5758735343913211798, guid: 1e55b363f4ac0cc4ea32c9159dbc8a88, type: 3}
+--- !u!114 &20524815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20524807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba1a2096145b544db3c31c5c03af658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyManager
+  movement: {fileID: 20524812}
+  health: {fileID: 20524816}
+  animator: {fileID: 20524814}
+--- !u!114 &20524816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20524807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e00f98104389f1418d1d35b79a68615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyHealth
+  maxHealth: 20
+  currentHealth: 0
 --- !u!1 &376853236 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8041491002173428630, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
