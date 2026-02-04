@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 20524814}
   - component: {fileID: 20524816}
   - component: {fileID: 20524815}
+  - component: {fileID: 20524817}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
@@ -195,10 +196,10 @@ BoxCollider2D:
   m_Offset: {x: 0.0018165112, y: 0.0018162727}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.6875, y: 0.625}
+    newSize: {x: 0.6875, y: 0.625}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
@@ -244,8 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyTrack
   moveSpeed: 2
-  updateInterval: 2
-  trackingRange: 4
+  trackingRange: 5
 --- !u!95 &20524813
 Animator:
   serializedVersion: 7
@@ -297,6 +297,7 @@ MonoBehaviour:
   movement: {fileID: 20524812}
   health: {fileID: 20524816}
   animator: {fileID: 20524814}
+  attack: {fileID: 20524817}
 --- !u!114 &20524816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,8 +310,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e00f98104389f1418d1d35b79a68615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyHealth
-  maxHealth: 20
+  maxHealth: 60
   currentHealth: 0
+--- !u!114 &20524817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20524807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f32f8a285833974db442c68ddb9af4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyAttack
+  attackRange: 2
+  attackCooldown: 2
+  chargeSpeed: 6
 --- !u!1 &376853236 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8041491002173428630, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}

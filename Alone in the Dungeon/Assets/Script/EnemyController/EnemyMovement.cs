@@ -8,7 +8,6 @@ namespace EnemyController
     {
         [Header("移动设置")]
         public float moveSpeed = 3f;
-        public float updateInterval = 0.5f;
         public float trackingRange = 5f;
         
         // 移动状态事件
@@ -16,57 +15,50 @@ namespace EnemyController
         
         private Rigidbody2D rb;
         private Transform playerTransform;
-        private float nextUpdateTime;
         private bool isMoving = false;
+        private EnemyAttack enemyAttack;
         
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
+            enemyAttack = GetComponent<EnemyAttack>();
             
+            // 获取玩家Transform
             if (PlayerManager.Instance != null)
             {
                 playerTransform = PlayerManager.Instance.PlayerTransform;
             }
-            
-            nextUpdateTime = Time.time + updateInterval;
         }
         
         void Update()
         {
-            // 定期更新玩家位置
-            if (Time.time >= nextUpdateTime)
-            {
-                UpdatePlayerTransform();
-                nextUpdateTime = Time.time + updateInterval;
-            }
-        }
-        
-        private void FixedUpdate()
-        {
-            HandleMovement();
-        }
-        
-        private void UpdatePlayerTransform()
-        {
+            // 如果玩家Transform为空，尝试重新获取
             if (playerTransform == null && PlayerManager.Instance != null)
             {
                 playerTransform = PlayerManager.Instance.PlayerTransform;
             }
         }
         
-        private void HandleMovement()
+        private void FixedUpdate()
         {
-            if (playerTransform == null)
+            // 如果正在攻击，不执行追踪逻辑
+            if (enemyAttack != null && enemyAttack.IsAttacking)
             {
-                StopMovement();
                 return;
             }
             
-            float distance = Vector2.Distance(playerTransform.position, transform.position);
-            
-            if (distance <= trackingRange)
+            if (playerTransform != null)
             {
-                MoveTowardsPlayer();
+                float distance = Vector2.Distance(playerTransform.position, transform.position);
+                
+                if (distance <= trackingRange)
+                {
+                    MoveTowardsPlayer();
+                }
+                else
+                {
+                    StopMovement();
+                }
             }
             else
             {
@@ -96,5 +88,8 @@ namespace EnemyController
                 OnMovementChanged?.Invoke(false);
             }
         }
+        
+        // 供其他组件访问的属性
+        public bool IsMoving => isMoving;
     }
 }

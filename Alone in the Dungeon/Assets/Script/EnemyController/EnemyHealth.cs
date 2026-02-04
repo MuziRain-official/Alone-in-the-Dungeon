@@ -40,9 +40,5 @@ namespace EnemyController
             Destroy(gameObject);
         }
         
-        public float GetHealthPercentage()
-        {
-            return (float)currentHealth / maxHealth;
-        }
     }
 }

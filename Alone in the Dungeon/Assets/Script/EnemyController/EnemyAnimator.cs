@@ -31,6 +31,11 @@ namespace EnemyController
                 animator.SetBool("isMoving", isMoving);
             }
         }
+
+        public void HandleAttackStart()
+        {
+            animator?.SetTrigger("Attack");
+        }
         
         public void HandleHurt()
         {

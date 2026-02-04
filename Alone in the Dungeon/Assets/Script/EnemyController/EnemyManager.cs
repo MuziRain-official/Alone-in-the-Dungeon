@@ -8,6 +8,7 @@ namespace EnemyController
         public EnemyMovement movement;
         public EnemyHealth health;
         public EnemyAnimator animator;
+        public EnemyAttack attack;
         
         void Start()
         {
@@ -26,6 +27,8 @@ namespace EnemyController
                 health = GetComponent<EnemyHealth>();
             if (animator == null)
                 animator = GetComponent<EnemyAnimator>();
+            if (attack == null)
+                attack = GetComponent<EnemyAttack>();
         }
         
         private void SetupComponentConnections()
@@ -42,6 +45,12 @@ namespace EnemyController
                 health.OnHurt += animator.HandleHurt;
                 health.OnDie += animator.HandleDie;
             }
+            
+            // 连接攻击组件事件到动画组件
+            if (attack != null && animator != null)
+            {
+                attack.OnAttackStart += animator.HandleAttackStart;
+            }
         }
         
         void OnDestroy()
@@ -56,6 +65,10 @@ namespace EnemyController
             {
                 health.OnHurt -= animator.HandleHurt;
                 health.OnDie -= animator.HandleDie;
+            }
+            if (attack != null && animator != null)
+            {
+                attack.OnAttackStart -= animator.HandleAttackStart;
             }
         }
     }
