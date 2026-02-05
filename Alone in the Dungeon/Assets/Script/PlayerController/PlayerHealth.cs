@@ -1,5 +1,5 @@
+using System;
 using PlayerController;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
     public static PlayerHealth Instance { get; private set; }
     public float maxHealth;
     public float currentHealth;
+    public event Action<float> OnDamage;
 
     void Awake()
     {
@@ -25,6 +26,7 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        OnDamage?.Invoke(damage);
         if (currentHealth <= 0)
         {
             Die();

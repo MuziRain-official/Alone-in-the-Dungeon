@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 1521281598661011712}
   - component: {fileID: 3447108451006887292}
   m_Layer: 0
-  m_Name: deathEffect
+  m_Name: deathEffect-Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

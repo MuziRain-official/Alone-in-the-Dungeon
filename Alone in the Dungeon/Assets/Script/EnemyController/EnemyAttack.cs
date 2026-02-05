@@ -10,7 +10,6 @@ namespace EnemyController
         public float attackRange = 2f;
         public float attackCooldown = 2f;
         public float chargeSpeed = 8f;
-        public float damagePerSecond = 20f; // 每秒伤害
         public float contactDamageInterval = 0.5f; // 接触伤害间隔
         // 攻击事件
         public event System.Action OnAttackStart;
@@ -112,7 +111,6 @@ namespace EnemyController
                 if (PlayerHealth.Instance != null)
                 {
                     PlayerHealth.Instance.TakeDamage(10f);
-                    Debug.Log($"Enemy dealt damage to player! Time: {Time.time}");
                 }
                 lastDamageTime = Time.time;
             }
