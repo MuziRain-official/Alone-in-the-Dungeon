@@ -2,7 +2,7 @@ using System;
 using PlayerController;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour,IDamageable
 {
     public static PlayerHealth Instance { get; private set; }
     public float maxHealth;
@@ -23,7 +23,7 @@ public class PlayerHealth : MonoBehaviour
     {
         
     }
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         OnDamage?.Invoke(damage);

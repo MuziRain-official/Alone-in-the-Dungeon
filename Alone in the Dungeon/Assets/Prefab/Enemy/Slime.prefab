@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e00f98104389f1418d1d35b79a68615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyHealth
-  maxHealth: 30
+  maxHealth: 20
   currentHealth: 0
 --- !u!114 &3334901239353633891
 MonoBehaviour:
@@ -282,7 +282,6 @@ MonoBehaviour:
   movement: {fileID: 6047899636667916329}
   health: {fileID: 6111030793212782833}
   animator: {fileID: 363241328695106032}
-  attack: {fileID: 644632615371972328}
 --- !u!114 &644632615371972328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba3c95c7a4f3c845b21841a01407b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyAttack
+  damageAmount: 10
   attackRange: 2
-  attackCooldown: 2
-  chargeSpeed: 8
+  attackCooldown: 3
+  chargeSpeed: 6
   contactDamageInterval: 0.5

@@ -7,6 +7,7 @@ namespace EnemyController
     public class EnemyAttack : MonoBehaviour, IEnemyAttacker // 实现接口
     {
         [Header("攻击设置")]
+        public int damageAmount = 10;
         public float attackRange = 2f;
         public float attackCooldown = 2f;
         public float chargeSpeed = 8f;
@@ -110,7 +111,7 @@ namespace EnemyController
             {
                 if (PlayerHealth.Instance != null)
                 {
-                    PlayerHealth.Instance.TakeDamage(10f);
+                    PlayerHealth.Instance.TakeDamage(damageAmount);
                 }
                 lastDamageTime = Time.time;
             }
