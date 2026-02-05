@@ -16,14 +16,13 @@ namespace EnemyController
         private Rigidbody2D rb;
         private Transform playerTransform;
         private bool isMoving = false;
-        private EnemyAttack enemyAttack;
+        private IEnemyAttacker enemyAttacker;
         
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
-            enemyAttack = GetComponent<EnemyAttack>();
+            enemyAttacker = GetComponent<IEnemyAttacker>();
             
-            // 获取玩家Transform
             if (PlayerManager.Instance != null)
             {
                 playerTransform = PlayerManager.Instance.PlayerTransform;
@@ -32,7 +31,6 @@ namespace EnemyController
         
         void Update()
         {
-            // 如果玩家Transform为空，尝试重新获取
             if (playerTransform == null && PlayerManager.Instance != null)
             {
                 playerTransform = PlayerManager.Instance.PlayerTransform;
@@ -42,9 +40,9 @@ namespace EnemyController
         private void FixedUpdate()
         {
             // 如果正在攻击，不执行追踪逻辑
-            if (enemyAttack != null && enemyAttack.IsAttacking)
+            if (enemyAttacker != null && enemyAttacker.IsAttacking)
             {
-                return;
+                return; // 只是返回，不停止移动
             }
             
             if (playerTransform != null)
@@ -89,7 +87,6 @@ namespace EnemyController
             }
         }
         
-        // 供其他组件访问的属性
         public bool IsMoving => isMoving;
     }
 }

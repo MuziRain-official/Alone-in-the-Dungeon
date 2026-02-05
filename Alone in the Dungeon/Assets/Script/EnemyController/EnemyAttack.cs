@@ -4,7 +4,7 @@ using PlayerController;
 
 namespace EnemyController
 {
-    public class EnemyAttack : MonoBehaviour
+    public class EnemyAttack : MonoBehaviour, IEnemyAttacker // 实现接口
     {
         [Header("攻击设置")]
         public float attackRange = 2f;
@@ -116,7 +116,7 @@ namespace EnemyController
             }
         }
         
-        // 属性
+        // 接口实现
         public bool IsAttacking => isAttacking;
     }
 }

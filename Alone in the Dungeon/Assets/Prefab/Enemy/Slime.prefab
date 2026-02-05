@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 363241328695106032}
   - component: {fileID: 6111030793212782833}
   - component: {fileID: 3334901239353633891}
-  - component: {fileID: 3832685775665476959}
+  - component: {fileID: 644632615371972328}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Enemy
@@ -123,7 +123,7 @@ Transform:
   m_GameObject: {fileID: 7284124373272540250}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.38, y: 0, z: 0}
+  m_LocalPosition: {x: -3.09861, y: -3.10653, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -282,8 +282,8 @@ MonoBehaviour:
   movement: {fileID: 6047899636667916329}
   health: {fileID: 6111030793212782833}
   animator: {fileID: 363241328695106032}
-  attack: {fileID: 3832685775665476959}
---- !u!114 &3832685775665476959
+  attack: {fileID: 644632615371972328}
+--- !u!114 &644632615371972328
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -292,10 +292,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7284124373272540250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f32f8a285833974db442c68ddb9af4d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ba3c95c7a4f3c845b21841a01407b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyAttack
-  attackRange: 3
-  attackCooldown: 3
-  chargeSpeed: 6
+  attackRange: 2
+  attackCooldown: 2
+  chargeSpeed: 8
   contactDamageInterval: 0.5

@@ -8,14 +8,12 @@ namespace EnemyController
         public EnemyMovement movement;
         public EnemyHealth health;
         public EnemyAnimator animator;
-        public EnemyAttack attack;
+        
+        private IEnemyAttacker attacker; // 使用接口类型
         
         void Start()
         {
-            // 确保所有组件都已获取
             InitializeComponents();
-            
-            // 设置组件间的连接
             SetupComponentConnections();
         }
         
@@ -27,8 +25,9 @@ namespace EnemyController
                 health = GetComponent<EnemyHealth>();
             if (animator == null)
                 animator = GetComponent<EnemyAnimator>();
-            if (attack == null)
-                attack = GetComponent<EnemyAttack>();
+            
+            // 获取攻击组件（通过接口）
+            attacker = GetComponent<IEnemyAttacker>();
         }
         
         private void SetupComponentConnections()
@@ -46,10 +45,10 @@ namespace EnemyController
                 health.OnDie += animator.HandleDie;
             }
             
-            // 连接攻击组件事件到动画组件
-            if (attack != null && animator != null)
+            // 连接攻击组件事件到动画组件（通过接口）
+            if (attacker != null && animator != null)
             {
-                attack.OnAttackStart += animator.HandleAttackStart;
+                attacker.OnAttackStart += animator.HandleAttackStart;
             }
         }
         
@@ -66,9 +65,10 @@ namespace EnemyController
                 health.OnHurt -= animator.HandleHurt;
                 health.OnDie -= animator.HandleDie;
             }
-            if (attack != null && animator != null)
+            
+            if (attacker != null && animator != null)
             {
-                attack.OnAttackStart -= animator.HandleAttackStart;
+                attacker.OnAttackStart -= animator.HandleAttackStart;
             }
         }
     }
