@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6243918022503308442}
   - component: {fileID: 3962453122857245026}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SlimeSR
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 6111030793212782833}
   - component: {fileID: 3334901239353633891}
   - component: {fileID: 644632615371972328}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -143,10 +143,10 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 1
   m_AngularDamping: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 634c697c7021fa544b9ceb8f00cc965d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyTrack
   moveSpeed: 2
-  trackingRange: 5
+  trackingRange: 4
 --- !u!95 &6930229439836007693
 Animator:
   serializedVersion: 7

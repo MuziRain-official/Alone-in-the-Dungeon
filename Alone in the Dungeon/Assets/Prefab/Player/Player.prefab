@@ -446,7 +446,7 @@ Rigidbody2D:
   m_LinearDamping: 2
   m_AngularDamping: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 453070aef75218b42838d33a47594f66, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -492,6 +492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController.AnimationController
   playerAnimator: {fileID: 4434720225247595452}
+  playerHealth: {fileID: 0}
 --- !u!114 &5526782568603923255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,6 +505,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d01764ecb9bda47ac54971c698e749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController.InputHandler
+  InputActions:
+    m_Name: Input Actions
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 2d082933-b828-4cde-be8d-37b94bf69901
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &4725044437639520137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +527,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController.MovementController
   moveSpeed: 5
-  normalizeInput: 1
 --- !u!114 &7029207463056484735
 MonoBehaviour:
   m_ObjectHideFlags: 0
