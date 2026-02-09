@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Enemy
+  - trap
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - UI
   - PlayerBullet
   - 'Enemy    '
-  - 
+  - trap
   - 
   - 
   - 
@@ -43,14 +44,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: player
-    uniqueID: 2425407127
-    locked: 0
   - name: object
     uniqueID: 1841096113
     locked: 0
+  - name: trap
+    uniqueID: 829190775
+    locked: 0
   - name: 'enemy       '
     uniqueID: 212460363
+    locked: 0
+  - name: player
+    uniqueID: 2425407127
     locked: 0
   m_RenderingLayers:
   - Default
