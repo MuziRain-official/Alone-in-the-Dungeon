@@ -8,13 +8,20 @@ namespace PlayerController
     public class AnimationController : MonoBehaviour
     {
         public Animator playerAnimator;
+        public PlayerHealth playerHealth;
         
-        private MovementController m_movementController;
+        private MovementController m_movementController; 
         
         void Start()
         {
             playerAnimator = GetComponent<Animator>();
             m_movementController = GetComponent<MovementController>();
+
+            playerHealth = PlayerHealth.Instance;
+            if (playerHealth != null)
+            {
+                playerHealth.OnDamage += HandleDamage;
+            }
         }
         
         void Update()
@@ -26,6 +33,11 @@ namespace PlayerController
             
             playerAnimator.SetBool("isMoving", isMoving);
 
+        }
+        
+        private void HandleDamage(float damage)
+        {
+            playerAnimator.SetTrigger("isHurt");
         }
     }
 }

@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ae32f68453da34b8b98a380577f61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 100
+  maxHealth: 1000
   currentHealth: 0
 --- !u!1001 &479985932
 PrefabInstance:
@@ -1723,6 +1723,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8583806080273609633, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
+      propertyPath: playerHealth
+      value: 
+      objectReference: {fileID: 376853256}
     - target: {fileID: 8777077545754910090, guid: 088492e3757e10440a71a070b07ca5c5, type: 3}
       propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.size
       value: 1
