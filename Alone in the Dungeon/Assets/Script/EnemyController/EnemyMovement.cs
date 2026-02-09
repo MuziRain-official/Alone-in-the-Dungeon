@@ -42,7 +42,7 @@ namespace EnemyController
             // 如果正在攻击，不执行追踪逻辑
             if (enemyAttacker != null && enemyAttacker.IsAttacking)
             {
-                return; // 只是返回，不停止移动
+                return;
             }
             
             if (playerTransform != null)
@@ -52,6 +52,7 @@ namespace EnemyController
                 if (distance <= trackingRange)
                 {
                     MoveTowardsPlayer();
+                    UpdateFacingDirection();
                 }
                 else
                 {
@@ -73,6 +74,18 @@ namespace EnemyController
             {
                 isMoving = true;
                 OnMovementChanged?.Invoke(true);
+            }
+        }
+        
+        private void UpdateFacingDirection()
+        {
+            if (playerTransform.position.x < transform.position.x)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                transform.localScale = new Vector3(1, 1, 1);
             }
         }
         

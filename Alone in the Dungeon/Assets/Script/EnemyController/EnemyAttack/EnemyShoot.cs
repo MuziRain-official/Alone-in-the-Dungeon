@@ -21,7 +21,7 @@ namespace EnemyController
         private Transform playerTransform;
         private Rigidbody2D rb;
         private bool isAttacking;
-        private EnemyFire enemyFire; // 改为EnemyFire组件
+        private EnemyFire enemyFire; // EnemyFire组件
         private Coroutine shootingCoroutine; // 射击协程引用
         
         void Start()
@@ -38,20 +38,6 @@ namespace EnemyController
             {
                 soldierWeapon.SetActive(false); // 开始时失活
                 enemyFire = soldierWeapon.GetComponent<EnemyFire>();
-            }
-            else
-            {
-                // 如果没有手动赋值，尝试自动查找
-                soldierWeapon = transform.Find("SoldierWeapon")?.gameObject;
-                if (soldierWeapon != null)
-                {
-                    soldierWeapon.SetActive(false);
-                    enemyFire = soldierWeapon.GetComponent<EnemyFire>();
-                }
-                else
-                {
-                    Debug.LogWarning("未找到SoldierWeapon子对象，请手动赋值或确保子对象名称正确");
-                }
             }
         }
         
@@ -90,28 +76,14 @@ namespace EnemyController
             {
                 soldierWeapon.SetActive(true);
                 
-                // 如果需要，可以在这里设置武器的朝向
-                if (playerTransform != null)
-                {
-                    // 计算朝向玩家的方向
-                    Vector3 direction = playerTransform.position - transform.position;
-                    direction.y = 0; // 保持水平，如果需要的话
-                    soldierWeapon.transform.right = direction.normalized;
-                }
-                
                 // 通知EnemyFire开始射击
                 if (enemyFire != null)
                 {
                     enemyFire.StartFiring();
                 }
                 
-                Debug.Log("敌人开始射击");
-                
                 // 等待射击持续时间
                 yield return new WaitForSeconds(shootingDuration);
-                
-                // 结束射击
-                Debug.Log("敌人结束射击");
                 
                 // 停止射击并失活武器子对象
                 if (enemyFire != null)
@@ -119,11 +91,6 @@ namespace EnemyController
                     enemyFire.StopFiring();
                 }
                 soldierWeapon.SetActive(false);
-            }
-            else
-            {
-                // 没有武器子对象，只等待射击持续时间
-                yield return new WaitForSeconds(shootingDuration);
             }
             
             isAttacking = false;
@@ -141,26 +108,5 @@ namespace EnemyController
         // 接口实现
         public bool IsAttacking => isAttacking;
         
-        // 如果需要提前停止射击（例如敌人死亡）
-        public void StopShooting()
-        {
-            if (shootingCoroutine != null)
-            {
-                StopCoroutine(shootingCoroutine);
-                isAttacking = false;
-                
-                // 确保武器被失活
-                if (enemyFire != null)
-                {
-                    enemyFire.StopFiring();
-                }
-                if (soldierWeapon != null)
-                {
-                    soldierWeapon.SetActive(false);
-                }
-                
-                OnAttackEnd?.Invoke();
-            }
-        }
     }
 }

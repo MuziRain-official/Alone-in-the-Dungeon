@@ -347,7 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyShoot
   attackRange: 4
   attackCooldown: 3
-  shootingDuration: 0.6
+  shootingDuration: 0.5
   soldierWeapon: {fileID: 1246191040490576723}
 --- !u!1 &7528150903275275637
 GameObject:

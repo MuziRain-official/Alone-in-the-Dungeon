@@ -34,7 +34,7 @@ namespace EnemyController
 
         public void HandleAttackStart()
         {
-            animator?.SetTrigger("Attack");
+            animator.SetTrigger("Attack");
         }
         
         public void HandleHurt()
@@ -47,10 +47,10 @@ namespace EnemyController
         
         public void HandleDie()
         {
-            if (animator != null)
-            {
-                animator.SetBool("isMoving", false);
-            }
+            // if (animator != null)
+            // {
+            //     animator.SetBool("isMoving", false);
+            // }
             
             PlayDeathEffect();
         }

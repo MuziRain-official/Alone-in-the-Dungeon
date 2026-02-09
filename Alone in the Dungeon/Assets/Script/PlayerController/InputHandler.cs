@@ -6,9 +6,11 @@ using UnityEngine.InputSystem;
 
 namespace PlayerController
 {
+    
     public class InputHandler : MonoBehaviour
     {
         public Vector2 MoveInput { get; private set; }
+        public InputAction InputActions;
              
         public void OnMove(InputAction.CallbackContext context)
         {
