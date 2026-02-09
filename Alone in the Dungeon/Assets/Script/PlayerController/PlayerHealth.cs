@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     public float maxHealth;
     public float currentHealth;
     public event Action<float> OnDamage;
+    public event Action OnDeath;
 
     void Awake()
     {
@@ -34,6 +35,7 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     }
     void Die()
     {
+        OnDeath?.Invoke();
         Destroy(PlayerManager.Instance.gameObject);
     }
 }

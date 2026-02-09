@@ -7,6 +7,7 @@ TagManager:
   - Obstacle
   - Enemy
   - trap
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -55,6 +56,9 @@ TagManager:
     locked: 0
   - name: player
     uniqueID: 2425407127
+    locked: 0
+  - name: UI
+    uniqueID: 1444677375
     locked: 0
   m_RenderingLayers:
   - Default
