@@ -12,15 +12,23 @@ namespace PlayerController
         
         private Rigidbody2D m_rb;
         private InputHandler m_inputHandler;
+        private DashSkill m_dashSkill;
         
         void Start()
         {
             m_rb = GetComponent<Rigidbody2D>();
             m_inputHandler = GetComponent<InputHandler>();
+            m_dashSkill = GetComponent<DashSkill>();
         }
         
         void FixedUpdate()//物理更新
         {
+            // 如果有冲刺组件且正在冲刺，跳过移动更新
+            if (m_dashSkill != null && m_dashSkill.IsDashing())
+            {
+                return;
+            }
+            
             if (m_inputHandler == null) return;
             
             Vector2 input = m_inputHandler.MoveInput;

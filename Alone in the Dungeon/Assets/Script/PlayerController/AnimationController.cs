@@ -11,11 +11,15 @@ namespace PlayerController
         public PlayerHealth playerHealth;
         
         private MovementController m_movementController; 
+        private DashSkill m_dashSkill;
         
         void Start()
         {
             playerAnimator = GetComponent<Animator>();
             m_movementController = GetComponent<MovementController>();
+            m_dashSkill = GetComponent<DashSkill>();
+            m_dashSkill.OnDashStart += HandleDash;
+  
 
             playerHealth = PlayerHealth.Instance;
             if (playerHealth != null)
@@ -38,6 +42,11 @@ namespace PlayerController
         private void HandleDamage(float damage)
         {
             playerAnimator.SetTrigger("isHurt");
+        }
+
+        private void HandleDash()
+        {
+            playerAnimator.SetTrigger("isDash");
         }
     }
 }

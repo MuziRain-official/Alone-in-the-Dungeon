@@ -316,7 +316,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1531689500017177669, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
   m_PrefabInstance: {fileID: 5898913202779187931}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7370648153308259445}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45ae32f68453da34b8b98a380577f61f, type: 3}
@@ -1851,6 +1851,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_ActionId
+      value: 36bae730-2355-40ba-b079-ad9f480ccbbc
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_ActionName
+      value: 'Player/Skill[/Keyboard/space]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 9188324309305936498}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Dash
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController.DushSkill, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3330299884603453995, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5927384441001430321, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1858,8 +1898,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5927384441001430321, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9188324309305936498}
   m_SourcePrefab: {fileID: 100100000, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+--- !u!1 &7370648153308259445 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5927384441001430321, guid: 170032ac18fefbf468acafec9141f3eb, type: 3}
+  m_PrefabInstance: {fileID: 5898913202779187931}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9188324309305936498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7370648153308259445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8bc361996af3d5478b76ba80f56cf56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController.DushSkill
+  dashSpeedBoost: 15
+  dashDuration: 0.5
+  dashCooldown: 2.5
+  dashDamage: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
