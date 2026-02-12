@@ -8,8 +8,6 @@ namespace PlayerController
     public class AnimationController : MonoBehaviour
     {
         public Animator playerAnimator;
-        public PlayerHealth playerHealth;
-        
         private MovementController m_movementController; 
         private DashSkill m_dashSkill;
         
@@ -20,11 +18,9 @@ namespace PlayerController
             m_dashSkill = GetComponent<DashSkill>();
             m_dashSkill.OnDashStart += HandleDash;
   
-
-            playerHealth = PlayerHealth.Instance;
-            if (playerHealth != null)
+            if (PlayerHealth.Instance != null)
             {
-                playerHealth.OnDamage += HandleDamage;
+                PlayerHealth.Instance.OnDamage += HandleDamage;
             }
         }
         

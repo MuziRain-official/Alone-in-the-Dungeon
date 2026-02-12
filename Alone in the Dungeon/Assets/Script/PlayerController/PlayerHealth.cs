@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     public float currentHealth;
     public event Action<float> OnDamage;
     public event Action OnDeath;
+    public event Action<float> OnHeal;
     private DashSkill dashSkill;
 
     void Awake()
@@ -43,5 +44,14 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     {
         OnDeath?.Invoke();
         Destroy(PlayerManager.Instance.gameObject);
+    }
+    public void Heal(int healAmount)
+    {
+        currentHealth += healAmount;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        OnHeal?.Invoke(healAmount);
     }
 }

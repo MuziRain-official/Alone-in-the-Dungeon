@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - trap
   - UI
+  - PlayerBullet
   layers:
   - Default
   - TransparentFX

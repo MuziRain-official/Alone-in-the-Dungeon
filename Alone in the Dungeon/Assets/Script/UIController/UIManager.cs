@@ -5,15 +5,13 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
     public Slider HealthBar;
-    public PlayerHealth playerHealth;
-
     public GameObject GameOverPanel;
     void Start()
     {
         Instance = this;
-        playerHealth = PlayerHealth.Instance;
-        playerHealth.OnDamage += UpdateHealthBar;
-        playerHealth.OnDeath += ShowGameOverPanel;
+        PlayerHealth.Instance.OnDamage += UpdateHealthBar;
+        PlayerHealth.Instance.OnHeal += UpdateHealthBar;
+        PlayerHealth.Instance.OnDeath += ShowGameOverPanel;
     }
     void Update()
     {
@@ -22,7 +20,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateHealthBar(float damage)
     {
-        HealthBar.value = playerHealth.currentHealth / playerHealth.maxHealth;
+        HealthBar.value = PlayerHealth.Instance.currentHealth / PlayerHealth.Instance.maxHealth;
     }
     
     public void ShowGameOverPanel()

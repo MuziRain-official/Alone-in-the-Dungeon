@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4198999668554431104}
-  - component: {fileID: 6420110333982678614}
   - component: {fileID: 8589674633267522701}
+  - component: {fileID: -2343681083798770677}
   m_Layer: 0
   m_Name: Box
   m_TagString: Obstacle
@@ -34,25 +34,6 @@ Transform:
   - {fileID: 6547227902763945604}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6420110333982678614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426312583055984013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 978be7b1dd4532946bfb2356b1081e59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BoxBreak
-  brokenPieces:
-  - {fileID: 2364487160019266058, guid: 1b7670e9e3be8ed40ad817037996ddd3, type: 3}
-  - {fileID: 2943320044097842199, guid: 65b035ee823540e4cb037a3bffd82e57, type: 3}
-  - {fileID: 2466279970656957473, guid: ef75490264270dc418bfca7ae4230397, type: 3}
-  - {fileID: 5176089745701793902, guid: cd86842edef8f794bac46e34f1520b8e, type: 3}
-  - {fileID: 1669148886364613647, guid: 73dbffb50e089344ab1d0ebf3e1bcbc4, type: 3}
-  - {fileID: 7542880188281359828, guid: 715ce58865e2f64499a5687c2ee7f295, type: 3}
 --- !u!61 &8589674633267522701
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -99,6 +80,26 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.81899804, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-2343681083798770677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426312583055984013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978be7b1dd4532946bfb2356b1081e59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoxBreak
+  brokenPieces:
+  - {fileID: 2364487160019266058, guid: 1b7670e9e3be8ed40ad817037996ddd3, type: 3}
+  - {fileID: 2943320044097842199, guid: 65b035ee823540e4cb037a3bffd82e57, type: 3}
+  - {fileID: 2466279970656957473, guid: ef75490264270dc418bfca7ae4230397, type: 3}
+  - {fileID: 5176089745701793902, guid: cd86842edef8f794bac46e34f1520b8e, type: 3}
+  - {fileID: 1669148886364613647, guid: 73dbffb50e089344ab1d0ebf3e1bcbc4, type: 3}
+  - {fileID: 7542880188281359828, guid: 715ce58865e2f64499a5687c2ee7f295, type: 3}
+  phial: {fileID: 6325865255713610537, guid: 670cb3498da3ad647bbcade2e3a26857, type: 3}
 --- !u!1 &4295829463574662056
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,8 +176,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1841096113
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 4098156409588004937, guid: d20bd72788d404f4f97aa3437567b963, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

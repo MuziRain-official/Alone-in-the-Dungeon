@@ -8,11 +8,7 @@ public class TrapDamage : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(damageAmount);
-            }
+            PlayerHealth.Instance.TakeDamage(damageAmount);
         }
     }
 }
