@@ -7,7 +7,7 @@ namespace PlayerController
 {
     public class DashSkill : MonoBehaviour
     {
-        [Header("冲刺速度加成")]
+        [Header("冲刺速度")]
         public float dashSpeedBoost = 15f;
         [Header("冲刺持续时间")]
         public float dashDuration = 0.2f;
@@ -17,6 +17,9 @@ namespace PlayerController
         public int dashDamage = 5;
         
         public event Action OnDashStart;
+
+        [Header("冲刺时无敌")]
+        public bool IsInvincible { get; private set; }
         
         private float dashTimer;
         private float cooldownTimer;
@@ -24,6 +27,7 @@ namespace PlayerController
         private BoxCollider2D m_collider;
         private Vector2 originalVelocity;
         private GameObject weaponObject;
+        private Vector2 dashDirection;
         
         void Start()
         {
@@ -52,6 +56,15 @@ namespace PlayerController
                 cooldownTimer -= Time.deltaTime;
             }
         }
+
+        void FixedUpdate()
+        {
+            if (IsDashing())
+            {
+                // 保持冲刺速度方向不变，防止被物理效果减速
+                m_rb.linearVelocity = dashDirection * dashSpeedBoost;
+            }
+        }
         
         public bool IsDashing()
         {
@@ -60,6 +73,8 @@ namespace PlayerController
         
         private void StartDash()
         {
+            IsInvincible = true;
+            
             // 禁用武器
             if (weaponObject != null)
                 weaponObject.SetActive(false);
@@ -71,6 +86,8 @@ namespace PlayerController
         
         private void EndDash()
         {
+            IsInvincible = false;
+            
             // 启用武器
             if (weaponObject != null)
                 weaponObject.SetActive(true);
@@ -98,29 +115,27 @@ namespace PlayerController
         {
             if (context.started)
             {
-                // 检查是否可以冲刺
                 if (cooldownTimer <= 0 && dashTimer <= 0)
-                {            
-                    // 保存当前速度
+                {
                     originalVelocity = m_rb.linearVelocity;
-                    
-                    // 在当前速度基础上增加爆发速度
-                    Vector2 boostDirection = originalVelocity.normalized;
-                    if (boostDirection.magnitude < 0.1f)
-                    {
-                        // 如果当前几乎静止，使用默认方向（比如向右）
-                        boostDirection = Vector2.right;
-                    }
-                    
-                    // 施加爆发速度
-                    m_rb.linearVelocity += boostDirection * dashSpeedBoost;
-                    // 触发冲刺事件
+
+                    // 正确计算鼠标世界坐标：使用玩家到相机的距离作为 Z 深度
+                    Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+                    Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(
+                        mouseScreenPos.x,
+                        mouseScreenPos.y,
+                        transform.position.z - Camera.main.transform.position.z
+                    ));
+
+                    dashDirection = (mouseWorldPos - transform.position).normalized;
+
+                    if (dashDirection.magnitude < 0.1f)
+                        dashDirection = transform.right;
+
+                    m_rb.linearVelocity = dashDirection * dashSpeedBoost;
+
                     OnDashStart?.Invoke();
-                    
-                    // 启动冲刺状态
                     StartDash();
-                    
-                    // 重置计时器
                     dashTimer = dashDuration;
                     cooldownTimer = dashCooldown;
                 }

@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     public float currentHealth;
     public event Action<float> OnDamage;
     public event Action OnDeath;
+    private DashSkill dashSkill;
 
     void Awake()
     {
@@ -16,6 +17,7 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     }
     void Start()
     {
+        dashSkill = GetComponent<DashSkill>();
         currentHealth = maxHealth;
     }
 
@@ -26,6 +28,10 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     }
     public void TakeDamage(int damage)
     {
+        if(dashSkill.IsInvincible)
+        {
+            return; // 如果无敌，则不受到伤害
+        }
         currentHealth -= damage;
         OnDamage?.Invoke(damage);
         if (currentHealth <= 0)
