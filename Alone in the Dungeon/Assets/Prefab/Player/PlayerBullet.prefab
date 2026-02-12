@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6961900695406667443}
   m_Layer: 6
   m_Name: PlayerBullet
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1869560169
-  m_SortingLayer: 1
+  m_SortingLayer: 4
   m_SortingOrder: 3
   m_Sprite: {fileID: 6367794737198530439, guid: 9768334e96ebea04381a09eac2b3530d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -178,5 +178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53c3d63b4d27986448bd9c6d6de9c7d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBullet
+  damage: 5
   speed: 10
   hitEffect: {fileID: 1363562331592552219, guid: d728ee47cfe5a71408496c0119dd4653, type: 3}
