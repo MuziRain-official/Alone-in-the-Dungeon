@@ -34,6 +34,7 @@ public class PlayerHealth : MonoBehaviour,IDamageable
             return; // 如果无敌，则不受到伤害
         }
         currentHealth -= damage;
+        AudioManager.instance.PlaySFX(1);
         OnDamage?.Invoke(damage);
         if (currentHealth <= 0)
         {
@@ -48,6 +49,7 @@ public class PlayerHealth : MonoBehaviour,IDamageable
     public void Heal(int healAmount)
     {
         currentHealth += healAmount;
+        AudioManager.instance.PlaySFX(2);
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;

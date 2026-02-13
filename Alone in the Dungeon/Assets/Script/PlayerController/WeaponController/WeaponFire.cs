@@ -22,6 +22,7 @@ public class WeaponFire : MonoBehaviour
         // 如果正在开火且时间已到，发射子弹
         if (isFiring && Time.time >= nextFireTime)
         {
+            AudioManager.instance.PlaySFX(0);
             Instantiate(bullet, firePoint.position, firePoint.rotation);
             nextFireTime = Time.time + fireRate; // 设置下次发射时间
         }
@@ -37,6 +38,7 @@ public class WeaponFire : MonoBehaviour
             if (Time.time >= nextFireTime)
             {
                 Instantiate(bullet, firePoint.position, firePoint.rotation);
+                AudioManager.instance.PlaySFX(0);
                 nextFireTime = Time.time + fireRate;
             }
         }

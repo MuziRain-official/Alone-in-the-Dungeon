@@ -21,6 +21,7 @@ namespace EnemyController
         public void TakeDamage(int damage)
         {
             currentHealth -= damage;
+            AudioManager.instance.PlaySFX(3);
             OnHurt?.Invoke();
             
             if (currentHealth <= 0)

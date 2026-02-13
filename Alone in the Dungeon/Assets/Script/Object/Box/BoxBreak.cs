@@ -14,6 +14,7 @@ public class BoxBreak : MonoBehaviour
     }
     private void SmashBox()
     {
+        AudioManager.instance.PlaySFX(4);
         Destroy(gameObject);
         for(int i = 0; i < piecesNum; i++)
         {
