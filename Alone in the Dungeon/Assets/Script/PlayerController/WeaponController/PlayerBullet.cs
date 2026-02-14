@@ -29,7 +29,7 @@ public class PlayerBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // 碰到敌人或障碍物时销毁子弹
-        if (collision.CompareTag("Enemy") || collision.CompareTag("Obstacle"))
+        if (collision.CompareTag("Enemy") || collision.CompareTag("Obstacle") || collision.CompareTag("Object") || collision.CompareTag("Background"))
         {
             Destroy(gameObject);
             Instantiate(hitEffect, transform.position, transform.rotation);

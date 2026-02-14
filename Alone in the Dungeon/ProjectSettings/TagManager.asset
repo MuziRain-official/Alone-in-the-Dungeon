@@ -9,6 +9,8 @@ TagManager:
   - trap
   - UI
   - PlayerBullet
+  - Background
+  - Object
   layers:
   - Default
   - TransparentFX
@@ -46,11 +48,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: object
-    uniqueID: 1841096113
+  - name: 'Background                   '
+    uniqueID: 200769845
     locked: 0
   - name: trap
     uniqueID: 829190775
+    locked: 0
+  - name: object
+    uniqueID: 1841096113
     locked: 0
   - name: 'enemy       '
     uniqueID: 212460363
