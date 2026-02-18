@@ -127,7 +127,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 212460363
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -8545534145182334539, guid: 9d8275f22d157a444b0f9203e7dddbf5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -157,6 +157,7 @@ GameObject:
   - component: {fileID: 3757932517854074302}
   - component: {fileID: 5764930574101549427}
   - component: {fileID: 3667345912860646762}
+  - component: {fileID: 8089321219391730758}
   m_Layer: 7
   m_Name: Soldier
   m_TagString: Enemy
@@ -281,8 +282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dab53acaeb2174fb6c9d8e60bd666a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyMovement
-  moveSpeed: 3
-  trackingRange: 6
+  moveSpeed: 4
+  trackingRange: 8
 --- !u!114 &4876381519823950832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,10 +346,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cbb6e5bffc58cc43a30bda5e9517abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyShoot
-  attackRange: 4
+  attackRange: 5
   attackCooldown: 3
   shootingDuration: 0.5
   soldierWeapon: {fileID: 1246191040490576723}
+--- !u!114 &8089321219391730758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7452476238867511230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8de1acc50d2e31a4db0c3a4e53e3793e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyRetreat
+  retreatThreshold: 2
+  retreatDistance: 5
+  retreatSpeed: 4
+  retreatWhileAttacking: 1
 --- !u!1 &7528150903275275637
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +443,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 212460363
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 4379075526720763537, guid: 3efde08f90b570d4ea0001439bc64093, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
