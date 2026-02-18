@@ -217,6 +217,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyTrack
   moveSpeed: 3
   trackingRange: 5
+  patrolOffsets:
+  - {x: 1, y: 1}
+  - {x: 1, y: -1}
+  - {x: -1, y: 1}
+  - {x: -1, y: -1}
+  patrolPauseDuration: 3
+  patrolTimeout: 1.5
 --- !u!95 &6930229439836007693
 Animator:
   serializedVersion: 7

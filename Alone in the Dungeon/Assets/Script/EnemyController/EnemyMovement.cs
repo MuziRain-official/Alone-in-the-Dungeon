@@ -9,26 +9,59 @@ namespace EnemyController
         [Header("移动设置")]
         public float moveSpeed = 3f;
         public float trackingRange = 5f;
-        
+
+        [Header("巡逻设置")]
+        public Vector2[] patrolOffsets;             // 相对于初始位置的偏移点数组
+        public float patrolPauseDuration = 1f;      // 到达巡逻点后的停留时间
+        public float patrolTimeout = 3f;             // 移动超时时间
+
         // 移动状态事件
         public event Action<bool> OnMovementChanged;
-        
+
         private Rigidbody2D rb;
         private Transform playerTransform;
         private bool isMoving = false;
         private IEnemyAttacker enemyAttacker;
-        
+
+        // 巡逻相关变量
+        private Vector2 patrolCenter;                // 初始位置（中心点）
+        private Vector2 patrolTarget;                 // 当前巡逻目标点
+        private float patrolPauseTimer = 0f;
+        private float moveStartTime;
+
+        // 敌人状态枚举（已移除Returning）
+        private enum EnemyState
+        {
+            Tracking,       // 追踪玩家
+            Patrolling      // 巡逻
+        }
+        private EnemyState currentState;
+
+        private const float ARRIVE_DISTANCE = 0.1f;
+
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
             enemyAttacker = GetComponent<IEnemyAttacker>();
-            
+
+            patrolCenter = transform.position;
+
             if (PlayerManager.Instance != null)
             {
                 playerTransform = PlayerManager.Instance.PlayerTransform;
             }
+
+            // 初始化状态
+            if (playerTransform != null && Vector2.Distance(playerTransform.position, transform.position) <= trackingRange)
+            {
+                currentState = EnemyState.Tracking;
+            }
+            else
+            {
+                EnterPatrolState();
+            }
         }
-        
+
         void Update()
         {
             if (playerTransform == null && PlayerManager.Instance != null)
@@ -36,70 +69,134 @@ namespace EnemyController
                 playerTransform = PlayerManager.Instance.PlayerTransform;
             }
         }
-        
+
         private void FixedUpdate()
         {
-            // 如果正在攻击，不执行追踪逻辑
+            // 如果正在攻击，不执行任何移动逻辑（但不要停止移动，攻击自己控制速度）
             if (enemyAttacker != null && enemyAttacker.IsAttacking)
             {
-                return;
+                return; // 直接返回，不干涉刚体速度
             }
-            
-            if (playerTransform != null)
+
+            bool playerInRange = playerTransform != null && 
+                                Vector2.Distance(playerTransform.position, transform.position) <= trackingRange;
+            switch (currentState)
             {
-                float distance = Vector2.Distance(playerTransform.position, transform.position);
-                
-                if (distance <= trackingRange)
+                case EnemyState.Tracking:
+                    if (playerInRange)
+                    {
+                        MoveTowards(playerTransform.position);
+                    }
+                    else
+                    {
+                        // 丢失玩家，直接进入巡逻状态（不再返回中心）
+                        EnterPatrolState();
+                    }
+                    break;
+
+                case EnemyState.Patrolling:
+                    if (playerInRange)
+                    {
+                        // 发现玩家，切换为追踪
+                        currentState = EnemyState.Tracking;
+                        StopMoving();
+                    }
+                    else
+                    {
+                        HandlePatrolling();
+                    }
+                    break;
+            }
+        }
+
+        private void HandlePatrolling()
+        {
+            if (isMoving)
+            {
+                // 超时检查
+                if (Time.time - moveStartTime > patrolTimeout)
                 {
-                    MoveTowardsPlayer();
-                    UpdateFacingDirection();
+                    StopMoving();
+                    patrolPauseTimer = 0f; // 立即重新选择
+                    return;
                 }
-                else
+
+                MoveTowards(patrolTarget);
+
+                // 到达目标点
+                if (Vector2.Distance(transform.position, patrolTarget) <= ARRIVE_DISTANCE)
                 {
-                    StopMovement();
+                    StopMoving();
+                    patrolPauseTimer = patrolPauseDuration;
                 }
             }
             else
             {
-                StopMovement();
+                patrolPauseTimer -= Time.fixedDeltaTime;
+                if (patrolPauseTimer <= 0f)
+                {
+                    ChooseNewPatrolTarget();
+                    moveStartTime = Time.time;
+                    MoveTowards(patrolTarget);
+                }
             }
         }
-        
-        private void MoveTowardsPlayer()
+
+        private void ChooseNewPatrolTarget()
         {
-            Vector2 direction = (playerTransform.position - transform.position).normalized;
+            if (patrolOffsets == null || patrolOffsets.Length == 0)
+            {
+                patrolTarget = transform.position;
+                Debug.LogWarning("巡逻偏移数组为空，敌人将停留在原地！");
+                return;
+            }
+
+            int index = UnityEngine.Random.Range(0, patrolOffsets.Length);
+            patrolTarget = patrolCenter + patrolOffsets[index];
+        }
+
+        private void EnterPatrolState()
+        {
+            currentState = EnemyState.Patrolling;
+            StopMoving();
+            patrolPauseTimer = patrolPauseDuration; // 先停留一秒
+        }
+
+        private void MoveTowards(Vector2 target)
+        {
+            Vector2 direction = (target - (Vector2)transform.position).normalized;
+
             rb.linearVelocity = direction * moveSpeed;
-            
+
             if (!isMoving)
             {
                 isMoving = true;
                 OnMovementChanged?.Invoke(true);
             }
+
+            UpdateFacingDirection(direction);
         }
-        
-        private void UpdateFacingDirection()
-        {
-            if (playerTransform.position.x < transform.position.x)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
-            else
-            {
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-        }
-        
-        private void StopMovement()
+
+        private void StopMoving()
         {
             rb.linearVelocity = Vector2.zero;
-            
+
             if (isMoving)
             {
                 isMoving = false;
                 OnMovementChanged?.Invoke(false);
             }
         }
-        
+
+        private void UpdateFacingDirection(Vector2 direction)
+        {
+            if (direction.x != 0)
+            {
+                float scaleX = direction.x < 0 ? -1 : 1;
+                transform.localScale = new Vector3(scaleX, 1, 1);
+            }
+        }
+
         public bool IsMoving => isMoving;
     }
 }

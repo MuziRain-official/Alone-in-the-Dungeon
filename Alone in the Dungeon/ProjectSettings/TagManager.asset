@@ -22,9 +22,9 @@ TagManager:
   - 'Enemy    '
   - trap
   - visual
-  - 
-  - 
-  - 
+  - room
+  - object
+  - wall
   - 
   - 
   - 
