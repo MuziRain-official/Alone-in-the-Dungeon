@@ -1,4 +1,5 @@
 using UnityEngine;
+using GameFramework;
 
 public class TrapDamage : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class TrapDamage : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            PlayerHealth.Instance.TakeDamage(damageAmount);
+            var damageable = collision.GetComponent<IDamageable>();
+            damageable?.TakeDamage(damageAmount);
         }
     }
 }

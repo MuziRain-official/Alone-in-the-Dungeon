@@ -1,30 +1,135 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : MonoBehaviour, GameFramework.IAudioService
 {
     public static AudioManager instance;
 
-    public AudioSource gameOverMusic,backGroundMusic,winGameMusic;
+    [Header("音乐")]
+    public AudioSource gameOverMusic;
+    public AudioSource backGroundMusic;
+    public AudioSource winGameMusic;
+
+    [Header("音效")]
     public AudioSource[] sfx;
-    void Start()
+
+    [Header("设置")]
+    public bool playMusicOnStart = true;
+    public string mainMenuSceneName = "MainMenu"; // 主菜单场景名称
+
+    private bool isGameScene = false;
+
+    void Awake()
     {
-        instance = this;
-        PlayerHealth.Instance.OnDeath += GameOver;
+        if (instance == null)
+        {
+            instance = this;
+
+            // 只有是根物体时才调用 DontDestroyOnLoad
+            if (transform.parent == null)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+
+            // 注册到服务定位器
+            if (GameFramework.ServiceLocator.Instance != null)
+            {
+                GameFramework.ServiceLocator.Instance.Register<GameFramework.IAudioService>(this);
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    void Update()
+    void Start()
     {
-        
+        // 订阅玩家死亡事件
+        if (PlayerController.PlayerHealth.Instance != null)
+        {
+            PlayerController.PlayerHealth.Instance.OnDied += GameOver;
+        }
+
+        // 订阅场景加载完成事件
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // 检查当前场景并播放音乐
+        CheckAndPlayMusic();
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        CheckAndPlayMusic();
+    }
+
+    private void CheckAndPlayMusic()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        // 如果是主菜单场景，停止背景音乐
+        if (currentScene == mainMenuSceneName || currentScene == "Menu" || currentScene == "MainMenu")
+        {
+            backGroundMusic?.Stop();
+            isGameScene = false;
+            return;
+        }
+
+        // 如果是游戏场景，播放背景音乐
+        if (playMusicOnStart && !isGameScene)
+        {
+            PlayBackgroundMusic();
+            isGameScene = true;
+        }
+    }
+
+    public void PlayBackgroundMusic()
+    {
+        if (backGroundMusic != null && !backGroundMusic.isPlaying)
+        {
+            backGroundMusic.Play();
+        }
+    }
+
     public void GameOver()
     {
-        backGroundMusic.Stop();
-        gameOverMusic.Play();
+        backGroundMusic?.Stop();
+        gameOverMusic?.Play();
     }
-    public void PlaySFX(int sfxnum)
+
+    public void PlaySFX(int sfxIndex)
     {
-        sfx[sfxnum].Stop();
-        sfx[sfxnum].Play();
+        if (sfx != null && sfxIndex >= 0 && sfxIndex < sfx.Length)
+        {
+            sfx[sfxIndex].Stop();
+            sfx[sfxIndex].Play();
+        }
+    }
+
+    public void PlayMusic(AudioSource music)
+    {
+        music?.Play();
+    }
+
+    public void StopMusic()
+    {
+        if (backGroundMusic != null)
+        {
+            backGroundMusic.Stop();
+        }
+        isGameScene = false;
+    }
+
+    void OnDestroy()
+    {
+        // 取消场景加载订阅
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        // 注销服务
+        if (GameFramework.ServiceLocator.Instance != null)
+        {
+            GameFramework.ServiceLocator.Instance.Unregister<GameFramework.IAudioService>();
+        }
     }
 }

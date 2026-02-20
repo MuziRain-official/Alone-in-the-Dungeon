@@ -1,4 +1,5 @@
 using UnityEngine;
+using GameFramework;
 
 public class PlayerBullet : MonoBehaviour
 {
@@ -8,32 +9,35 @@ public class PlayerBullet : MonoBehaviour
     public float speed = 10f;
     [Header("子弹碰撞特效")]
     public GameObject hitEffect;
+
     private Rigidbody2D rb;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
-    {
-        
-    }
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         rb.linearVelocity = transform.right * speed;
     }
+
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 碰到敌人或障碍物时销毁子弹
-        if (collision.CompareTag("Enemy") || collision.CompareTag("Obstacle") || collision.CompareTag("Object") || collision.CompareTag("Background"))
+        if (collision.CompareTag("Enemy") || collision.CompareTag("Obstacle") ||
+            collision.CompareTag("Object") || collision.CompareTag("Background"))
         {
             Destroy(gameObject);
-            Instantiate(hitEffect, transform.position, transform.rotation);
-            // 调用接口对敌人造成伤害
+            if (hitEffect != null)
+            {
+                Instantiate(hitEffect, transform.position, transform.rotation);
+            }
+
             var damageable = collision.GetComponent<IDamageable>();
             if (damageable != null)
             {

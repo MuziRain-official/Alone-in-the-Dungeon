@@ -1,19 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
+using GameFramework;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviour, IUIService
 {
     public static UIManager Instance;
+
+    [Header("UI组件")]
     public Slider HealthBar;
     public GameObject GameOverPanel;
     public GameObject PauseMenu;
-    public string NewGame;      // 重新开始加载的场景名称
-    public string MainMenu;     // 主菜单场景名称
+
+    [Header("场景设置")]
+    public string NewGame;
+    public string MainMenu;
+
     public bool isPaused;
 
-    void Start()
+    private EventManager eventManager;
+
+    void Awake()
     {
-        // 单例初始化
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -21,68 +28,163 @@ public class UIManager : MonoBehaviour
         }
         Instance = this;
 
-        // 绑定玩家生命值事件
-        PlayerHealth.Instance.OnDamage += UpdateHealthBar;
-        PlayerHealth.Instance.OnHeal += UpdateHealthBar;
-        PlayerHealth.Instance.OnDeath += ShowGameOverPanel;
-    }
-
-    // 更新血量显示
-    public void UpdateHealthBar(float damage)
-    {
-        HealthBar.value = PlayerHealth.Instance.currentHealth / PlayerHealth.Instance.maxHealth;
-    }
-
-    // 显示游戏结束面板（同时关闭暂停菜单，确保状态一致）
-    public void ShowGameOverPanel()
-    {
-        GameOverPanel.SetActive(true);
-        if (PauseMenu.activeSelf)
+        // 注册到服务定位器
+        if (ServiceLocator.Instance != null)
         {
-            PauseMenu.SetActive(false);
-            isPaused = false;
-            Time.timeScale = 1f; // 游戏结束通常让时间继续（或根据需要保持暂停）
+            ServiceLocator.Instance.Register<IUIService>(this);
         }
     }
 
-    /// <summary>
-    /// 由 InputSystem 调用的暂停切换方法（打开/关闭暂停菜单）
-    /// </summary>
-    public void TogglePauseMenu()
+    void Start()
     {
-        // 如果游戏已结束，不允许暂停
-        if (GameOverPanel.activeSelf) return;
+        eventManager = EventManager.Instance;
 
-        isPaused = !isPaused;
-        PauseMenu.SetActive(isPaused);
-        Time.timeScale = isPaused ? 0f : 1f;
+        // 订阅事件
+        if (PlayerController.PlayerHealth.Instance != null)
+        {
+            PlayerController.PlayerHealth.Instance.OnDamaged += OnPlayerDamaged;
+            PlayerController.PlayerHealth.Instance.OnHealed += OnPlayerHealed;
+            PlayerController.PlayerHealth.Instance.OnDied += OnPlayerDied;
+        }
+
+        // 也订阅事件中心
+        eventManager?.Subscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
+        eventManager?.Subscribe<PlayerHealEvent>(OnPlayerHealEvent);
+        eventManager?.Subscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
     }
 
-    /// <summary>
-    /// 继续游戏（由“继续游戏”按钮调用）
-    /// </summary>
+    // 通过事件中心处理
+    private void OnPlayerDamageEvent(PlayerDamageEvent e)
+    {
+        UpdateHealthBar(e.currentHealth, e.maxHealth);
+    }
+
+    private void OnPlayerHealEvent(PlayerHealEvent e)
+    {
+        UpdateHealthBar(e.currentHealth, e.maxHealth);
+    }
+
+    private void OnPlayerDeathEvent(PlayerDeathEvent e)
+    {
+        ShowGameOverPanel();
+    }
+
+    // 直接回调处理（兼容）
+    private void OnPlayerDamaged(float damage)
+    {
+        var player = PlayerController.PlayerHealth.Instance;
+        if (player != null)
+        {
+            UpdateHealthBar(player.CurrentHealth, player.MaxHealth);
+        }
+    }
+
+    private void OnPlayerHealed(float healAmount)
+    {
+        var player = PlayerController.PlayerHealth.Instance;
+        if (player != null)
+        {
+            UpdateHealthBar(player.CurrentHealth, player.MaxHealth);
+        }
+    }
+
+    private void OnPlayerDied()
+    {
+        ShowGameOverPanel();
+    }
+
+    // IUIService 实现
+    public void UpdateHealthBar(float currentHealth, float maxHealth)
+    {
+        if (HealthBar != null)
+        {
+            HealthBar.value = currentHealth / maxHealth;
+        }
+    }
+
+    public void ShowGameOverPanel()
+    {
+        if (GameOverPanel != null)
+        {
+            GameOverPanel.SetActive(true);
+            if (PauseMenu != null && PauseMenu.activeSelf)
+            {
+                PauseMenu.SetActive(false);
+                isPaused = false;
+                Time.timeScale = 1f;
+            }
+        }
+    }
+
+    public void TogglePauseMenu()
+    {
+        if (GameOverPanel != null && GameOverPanel.activeSelf) return;
+
+        isPaused = !isPaused;
+        if (PauseMenu != null)
+        {
+            PauseMenu.SetActive(isPaused);
+        }
+        Time.timeScale = isPaused ? 0f : 1f;
+
+        eventManager?.Publish(new GamePauseEvent { isPaused = isPaused });
+    }
+
     public void ResumeGame()
     {
         isPaused = false;
-        PauseMenu.SetActive(false);
+        if (PauseMenu != null)
+        {
+            PauseMenu.SetActive(false);
+        }
         Time.timeScale = 1f;
     }
 
-    /// <summary>
-    /// 重新开始游戏（由“重新开始”按钮调用）
-    /// </summary>
     public void RestartGame()
     {
-        Time.timeScale = 1f; // 确保时间恢复
+        // 停止背景音乐
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.StopMusic();
+        }
+
+        Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene(NewGame);
     }
 
-    /// <summary>
-    /// 返回主菜单（由主菜单按钮调用）
-    /// </summary>
     public void ReturnToMainMenu()
     {
+        // 停止背景音乐，避免与主菜单音乐重叠
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.StopMusic();
+        }
+
         Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene(MainMenu);
+    }
+
+    void OnDestroy()
+    {
+        // 注销服务
+        if (ServiceLocator.Instance != null)
+        {
+            ServiceLocator.Instance.Unregister<IUIService>();
+        }
+
+        // 取消订阅事件
+        if (PlayerController.PlayerHealth.Instance != null)
+        {
+            PlayerController.PlayerHealth.Instance.OnDamaged -= OnPlayerDamaged;
+            PlayerController.PlayerHealth.Instance.OnHealed -= OnPlayerHealed;
+            PlayerController.PlayerHealth.Instance.OnDied -= OnPlayerDied;
+        }
+
+        if (eventManager != null)
+        {
+            eventManager.Unsubscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
+            eventManager.Unsubscribe<PlayerHealEvent>(OnPlayerHealEvent);
+            eventManager.Unsubscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
+        }
     }
 }

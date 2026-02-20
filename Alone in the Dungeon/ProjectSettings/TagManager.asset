@@ -19,7 +19,7 @@ TagManager:
   - Water
   - UI
   - PlayerBullet
-  - 'Enemy    '
+  - Enemy
   - trap
   - visual
   - room

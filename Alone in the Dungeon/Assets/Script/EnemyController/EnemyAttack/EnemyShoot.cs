@@ -1,112 +1,116 @@
-using UnityEngine;
+using System;
 using System.Collections;
-using PlayerController;
+using UnityEngine;
+using GameFramework;
 
 namespace EnemyController
 {
+    /// <summary>
+    /// 敌人射击攻击 - 实现 IEnemyAttacker 接口
+    /// </summary>
     public class EnemyShoot : MonoBehaviour, IEnemyAttacker
     {
         [Header("射击设置")]
         public float attackRange = 5f;
         public float attackCooldown = 2f;
-        public float shootingDuration = 1f; // 射击持续时间
-        
+        public float shootingDuration = 1f;
+
         [Header("武器设置")]
-        public GameObject soldierWeapon; // 拖拽赋值：SoldierWeapon子对象
-        
-        // 实现接口中的事件
-        public event System.Action OnAttackStart;
-        public event System.Action OnAttackEnd;
-        
+        public GameObject soldierWeapon;
+
+        // 攻击事件
+        public event Action OnAttackStart;
+        public event Action OnAttackEnd;
+
         private Transform playerTransform;
         private Rigidbody2D rb;
         private bool isAttacking;
-        private EnemyFire enemyFire; // EnemyFire组件
-        private Coroutine shootingCoroutine; // 射击协程引用
-        
+        private EnemyFire enemyFire;
+        private Coroutine shootingCoroutine;
+
         void Start()
         {
             rb = GetComponent<Rigidbody2D>();
-            
-            if (PlayerManager.Instance != null)
-            {
-                playerTransform = PlayerManager.Instance.PlayerTransform;
-            }
-            
-            // 确保武器子对象存在
+            TryGetPlayerTransform();
+
             if (soldierWeapon != null)
             {
-                soldierWeapon.SetActive(false); // 开始时失活
+                soldierWeapon.SetActive(false);
                 enemyFire = soldierWeapon.GetComponent<EnemyFire>();
             }
         }
-        
+
         void Update()
-        {            
-            // 检测攻击条件
+        {
+            if (playerTransform == null)
+            {
+                TryGetPlayerTransform();
+            }
+
             if (!isAttacking && playerTransform != null)
             {
                 float distance = Vector2.Distance(playerTransform.position, transform.position);
                 if (distance <= attackRange) StartAttack();
             }
         }
-        
+
+        private void TryGetPlayerTransform()
+        {
+            var playerProvider = ServiceLocator.Instance?.Get<IPlayerProvider>();
+            if (playerProvider != null)
+            {
+                playerTransform = playerProvider.PlayerTransform;
+            }
+            else if (PlayerController.PlayerManager.Instance != null)
+            {
+                playerTransform = PlayerController.PlayerManager.Instance.PlayerTransform;
+            }
+        }
+
         private void StartAttack()
         {
             isAttacking = true;
-            OnAttackStart?.Invoke(); // 触发攻击开始事件
-            
-            // 执行射击行为
+            OnAttackStart?.Invoke();
             shootingCoroutine = StartCoroutine(Shoot());
-            
-            // 开始冷却
             StartCoroutine(AttackCooldown());
         }
-        
+
         private IEnumerator Shoot()
         {
-            // 射击前停止移动
             if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
             }
-            
-            // 激活武器子对象
+
             if (soldierWeapon != null)
             {
                 soldierWeapon.SetActive(true);
-                
-                // 通知EnemyFire开始射击
+
                 if (enemyFire != null)
                 {
                     enemyFire.StartFiring();
                 }
-                
-                // 等待射击持续时间
+
                 yield return new WaitForSeconds(shootingDuration);
-                
-                // 停止射击并失活武器子对象
+
                 if (enemyFire != null)
                 {
                     enemyFire.StopFiring();
                 }
                 soldierWeapon.SetActive(false);
             }
-            
+
             isAttacking = false;
-            OnAttackEnd?.Invoke(); // 触发攻击结束事件
+            OnAttackEnd?.Invoke();
         }
-        
+
         private IEnumerator AttackCooldown()
         {
-            // 禁用攻击检测
             enabled = false;
             yield return new WaitForSeconds(attackCooldown);
             enabled = true;
         }
-        
-        // 接口实现
+
         public bool IsAttacking => isAttacking;
-        
     }
 }

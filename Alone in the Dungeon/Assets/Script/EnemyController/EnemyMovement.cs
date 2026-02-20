@@ -1,6 +1,6 @@
 using UnityEngine;
-using PlayerController;
 using System;
+using GameFramework;
 
 namespace EnemyController
 {
@@ -29,7 +29,7 @@ namespace EnemyController
         private float patrolPauseTimer = 0f;
         private float moveStartTime;
 
-        // 敌人状态枚举（已移除Returning）
+        // 敌人状态枚举
         private enum EnemyState
         {
             Tracking,       // 追踪玩家
@@ -46,10 +46,8 @@ namespace EnemyController
 
             patrolCenter = transform.position;
 
-            if (PlayerManager.Instance != null)
-            {
-                playerTransform = PlayerManager.Instance.PlayerTransform;
-            }
+            // 通过服务定位器获取玩家信息（解耦）
+            TryGetPlayerTransform();
 
             // 初始化状态
             if (playerTransform != null && Vector2.Distance(playerTransform.position, transform.position) <= trackingRange)
@@ -64,21 +62,35 @@ namespace EnemyController
 
         void Update()
         {
-            if (playerTransform == null && PlayerManager.Instance != null)
+            if (playerTransform == null)
             {
-                playerTransform = PlayerManager.Instance.PlayerTransform;
+                TryGetPlayerTransform();
+            }
+        }
+
+        private void TryGetPlayerTransform()
+        {
+            var playerProvider = ServiceLocator.Instance?.Get<IPlayerProvider>();
+            if (playerProvider != null)
+            {
+                playerTransform = playerProvider.PlayerTransform;
+            }
+            // 备用方案：直接检查PlayerManager
+            else if (PlayerController.PlayerManager.Instance != null)
+            {
+                playerTransform = PlayerController.PlayerManager.Instance.PlayerTransform;
             }
         }
 
         private void FixedUpdate()
         {
-            // 如果正在攻击，不执行任何移动逻辑（但不要停止移动，攻击自己控制速度）
+            // 如果正在攻击，不执行任何移动逻辑
             if (enemyAttacker != null && enemyAttacker.IsAttacking)
             {
-                return; // 直接返回，不干涉刚体速度
+                return;
             }
 
-            bool playerInRange = playerTransform != null && 
+            bool playerInRange = playerTransform != null &&
                                 Vector2.Distance(playerTransform.position, transform.position) <= trackingRange;
             switch (currentState)
             {
@@ -89,7 +101,7 @@ namespace EnemyController
                     }
                     else
                     {
-                        // 丢失玩家，直接进入巡逻状态（不再返回中心）
+                        // 丢失玩家，进入巡逻状态
                         EnterPatrolState();
                     }
                     break;
@@ -117,7 +129,7 @@ namespace EnemyController
                 if (Time.time - moveStartTime > patrolTimeout)
                 {
                     StopMoving();
-                    patrolPauseTimer = 0f; // 立即重新选择
+                    patrolPauseTimer = 0f;
                     return;
                 }
 
@@ -159,13 +171,12 @@ namespace EnemyController
         {
             currentState = EnemyState.Patrolling;
             StopMoving();
-            patrolPauseTimer = patrolPauseDuration; // 先停留一秒
+            patrolPauseTimer = patrolPauseDuration;
         }
 
         private void MoveTowards(Vector2 target)
         {
             Vector2 direction = (target - (Vector2)transform.position).normalized;
-
             rb.linearVelocity = direction * moveSpeed;
 
             if (!isMoving)
