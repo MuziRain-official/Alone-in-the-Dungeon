@@ -50,6 +50,7 @@ MonoBehaviour:
   isOpen: 0
   openRotation: 180
   closedRotation: 0
+  triggerCollider: {fileID: 1562916964198260710}
   physicsCollider: {fileID: 9044508244021820202}
   closedSprite: {fileID: -5812127159173817068, guid: 6cd968c482d242f48bd808f10a25bf5d, type: 3}
   openSprite: {fileID: -369029995, guid: 6cd968c482d242f48bd808f10a25bf5d, type: 3}

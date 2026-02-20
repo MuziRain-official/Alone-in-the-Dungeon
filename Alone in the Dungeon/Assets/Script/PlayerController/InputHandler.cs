@@ -10,11 +10,17 @@ namespace PlayerController
     public class InputHandler : MonoBehaviour
     {
         public Vector2 MoveInput { get; private set; }
+        public bool IsSprinting { get; private set; }
         public InputAction InputActions;
-             
+
         public void OnMove(InputAction.CallbackContext context)
         {
             MoveInput = context.ReadValue<Vector2>();
+        }
+
+        public void OnSprint(InputAction.CallbackContext context)
+        {
+            IsSprinting = context.performed;
         }
     }
 }
