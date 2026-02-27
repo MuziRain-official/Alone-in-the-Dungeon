@@ -15,6 +15,8 @@ namespace PlayerController
         public float dashCooldown = 1f;
         [Header("冲刺伤害")]
         public int dashDamage = 5;
+        [Header("卡肉持续时间")]
+        public float hitStopDuration = 0.08f;
         
         public event Action OnDashStart;
 
@@ -28,6 +30,7 @@ namespace PlayerController
         private Vector2 originalVelocity;
         private GameObject weaponObject;
         private Vector2 dashDirection;
+        private bool isPaused; // 卡肉期间暂停物理更新
         
         void Start()
         {
@@ -59,6 +62,9 @@ namespace PlayerController
 
         void FixedUpdate()
         {
+            // 卡肉期间不更新物理
+            if (isPaused) return;
+
             if (IsDashing())
             {
                 // 保持冲刺速度方向不变，防止被物理效果减速
@@ -74,11 +80,11 @@ namespace PlayerController
         private void StartDash()
         {
             IsInvincible = true;
-            
+
             // 禁用武器
             if (weaponObject != null)
                 weaponObject.SetActive(false);
-            
+
             // 开启触发器模式，不与敌人物理碰撞
             if (m_collider != null)
                 m_collider.isTrigger = true;
@@ -107,8 +113,34 @@ namespace PlayerController
                 if (enemyHealth != null)
                 {
                     enemyHealth.TakeDamage(dashDamage);
+                    // 触发卡肉效果
+                    TriggerHitStop();
                 }
             }
+        }
+
+        // 卡肉效果 - 玩家短暂停顿
+        private void TriggerHitStop()
+        {
+            StartCoroutine(HitStopCoroutine());
+        }
+
+        private System.Collections.IEnumerator HitStopCoroutine()
+        {
+            // 标记暂停状态，阻止FixedUpdate更新速度
+            isPaused = true;
+            m_rb.linearVelocity = Vector2.zero;
+
+            float pauseTimer = hitStopDuration;
+            while (pauseTimer > 0)
+            {
+                yield return null;
+                pauseTimer -= Time.deltaTime;
+                m_rb.linearVelocity = Vector2.zero;
+            }
+
+            // 恢复物理更新
+            isPaused = false;
         }
                 
         public void Dash(InputAction.CallbackContext context)

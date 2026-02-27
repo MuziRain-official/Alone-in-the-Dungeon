@@ -3920,11 +3920,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2687588655599379061, guid: 8892444d7b168ed4f9b892263045b8bc, type: 3}
       propertyPath: dashDamage
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2687588655599379061, guid: 8892444d7b168ed4f9b892263045b8bc, type: 3}
       propertyPath: dashCooldown
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687588655599379061, guid: 8892444d7b168ed4f9b892263045b8bc, type: 3}
+      propertyPath: dashDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687588655599379061, guid: 8892444d7b168ed4f9b892263045b8bc, type: 3}
+      propertyPath: dashSpeedBoost
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2687588655599379061, guid: 8892444d7b168ed4f9b892263045b8bc, type: 3}
+      propertyPath: hitStopDuration
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 2687588655599379061, guid: 8892444d7b168ed4f9b892263045b8bc, type: 3}
       propertyPath: enemyLayer.m_Bits
