@@ -88,6 +88,10 @@ public class AudioManager : MonoBehaviour, GameFramework.IAudioService
 
     public void PlayBackgroundMusic()
     {
+        // 停止Boss音乐
+        bossBattleMusic?.Stop();
+        bossSecondPhaseMusic?.Stop();
+
         if (backGroundMusic != null && !backGroundMusic.isPlaying)
         {
             backGroundMusic.Play();

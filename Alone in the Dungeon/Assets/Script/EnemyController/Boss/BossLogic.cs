@@ -13,7 +13,7 @@ public class BossLogic : MonoBehaviour
 
     [Header("战斗设置")]
     public int damageToPlayer = 1;           // 撞击玩家造成的伤害
-    public float chaseRange = 8f;           // 追击范围
+    public float chaseDuration = 5f;         // 追击持续时间
     public float arriveDistance = 0.5f;     // 到达固定点的判定距离
     public float shootDuration = 3f;        // 到达固定点后的射击持续时间
 
@@ -62,6 +62,9 @@ public class BossLogic : MonoBehaviour
 
     // 激活状态
     private bool isActivated = false;
+
+    // 刚完成射击标志（防止连续在同一点射击）
+    private bool justFinishedShooting = false;
 
     // 音效播放状态
     private bool hasPlayedHalfHealthSfx = false;
@@ -253,22 +256,59 @@ public class BossLogic : MonoBehaviour
 
         rb.linearVelocity = moveDir * currentSpeed;
 
-        if (moveDir.x != 0)
+        // 朝向逻辑：移动到固定点时朝固定点方向，其他状态朝向玩家
+        float direction = 0;
+        if (currentState == BossState.MoveToPoint && currentPointIndex >= 0 && movePoints[currentPointIndex] != null)
         {
-            float scaleX = moveDir.x > 0 ? 1 : -1;
+            direction = movePoints[currentPointIndex].position.x - transform.position.x;
+        }
+        else if (playerTransform != null)
+        {
+            direction = playerTransform.position.x - transform.position.x;
+        }
+
+        if (direction != 0)
+        {
+            float scaleX = direction > 0 ? 1 : -1;
             transform.localScale = new Vector3(scaleX, 1, 1);
         }
     }
 
     private void ChooseRandomBehavior()
     {
-        bool chasePlayer = UnityEngine.Random.value > 0.5f;
+        // 如果刚完成射击，必须移动到其他点
+        if (justFinishedShooting)
+        {
+            justFinishedShooting = false;
+            // 只有存在多个固定点时才能移动到其他点
+            if (movePoints != null && movePoints.Length > 1)
+            {
+                int newIndex;
+                do
+                {
+                    newIndex = UnityEngine.Random.Range(0, movePoints.Length);
+                } while (newIndex == currentPointIndex);
+                currentPointIndex = newIndex;
+                currentState = BossState.MoveToPoint;
+                isMoving = true;
+                return;
+            }
+            // 只有一个或没有固定点时，进入Idle等待，不立即再次射击
+            currentState = BossState.Idle;
+            stateTimer = 2f;
+            return;
+        }
 
-        if (chasePlayer && playerTransform != null &&
-            Vector2.Distance(playerTransform.position, transform.position) <= chaseRange)
+        // 60%概率追击玩家（二阶段才能追击）
+        bool chasePlayer = UnityEngine.Random.value > 0.4f;
+
+        // 检查是否进入二阶段（血量低于50%）
+        bool isSecondPhase = enemyHealth != null && enemyHealth.CurrentHealth <= enemyHealth.MaxHealth * 0.5f;
+
+        if (chasePlayer && playerTransform != null && isSecondPhase)
         {
             currentState = BossState.ChasePlayer;
-            stateTimer = 5f;
+            stateTimer = chaseDuration;
         }
         else
         {
@@ -342,6 +382,7 @@ public class BossLogic : MonoBehaviour
         {
             currentState = BossState.Idle;
             stateTimer = 1f;
+            justFinishedShooting = true;  // 标记刚完成射击，下一次必须移动到其他点
 
             if (movePoints != null && movePoints.Length > 1)
             {
@@ -354,11 +395,13 @@ public class BossLogic : MonoBehaviour
             }
         }
 
-        if (playerTransform != null &&
-            Vector2.Distance(playerTransform.position, transform.position) <= chaseRange)
+        // 二阶段才能从射击切换到追击
+        bool isSecondPhase = enemyHealth != null && enemyHealth.CurrentHealth <= enemyHealth.MaxHealth * 0.5f;
+
+        if (playerTransform != null && isSecondPhase)
         {
             currentState = BossState.ChasePlayer;
-            stateTimer = 5f;
+            stateTimer = chaseDuration;
             isMoving = true;
         }
     }
@@ -424,8 +467,5 @@ public class BossLogic : MonoBehaviour
                 }
             }
         }
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
     }
 }

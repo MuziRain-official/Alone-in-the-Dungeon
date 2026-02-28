@@ -179,5 +179,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBullet
   damage: 5
-  speed: 10
+  speed: 15
   hitEffect: {fileID: 1363562331592552219, guid: d728ee47cfe5a71408496c0119dd4653, type: 3}

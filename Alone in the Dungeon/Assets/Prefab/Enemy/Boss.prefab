@@ -184,9 +184,9 @@ MonoBehaviour:
   shootPoint: {fileID: 5706658783232846254}
   shootInterval: 0.5
   bullet: {fileID: 4968802611759077504, guid: 2edafe62c694fc74e9c35bf18dc1dfa6, type: 3}
-  moveSpeed: 8
+  moveSpeed: 10
   chaseSpeed: 10
-  knockbackSlowFactor: 0.75
+  knockbackSlowFactor: 0.8
   knockbackDuration: 0.5
   damageCooldown: 0.5
 --- !u!114 &5526767841717642715
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e00f98104389f1418d1d35b79a68615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController.EnemyHealth
-  maxHealth: 20
+  maxHealth: 200
   currentHealth: 0
 --- !u!1 &1134906777783413373
 GameObject:
