@@ -106,7 +106,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -120,7 +120,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -144,7 +144,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -172,12 +172,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 200
-        width: 50
-        height: 41
+        x: 8
+        y: 201
+        width: 48
+        height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -194,12 +194,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_1
       rect:
         serializedVersion: 2
-        x: 71
-        y: 200
-        width: 50
-        height: 40
+        x: 72
+        y: 201
+        width: 48
+        height: 38
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -216,12 +216,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_2
       rect:
         serializedVersion: 2
-        x: 137
-        y: 200
-        width: 48
-        height: 39
+        x: 138
+        y: 201
+        width: 46
+        height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -238,12 +238,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_3
       rect:
         serializedVersion: 2
-        x: 199
-        y: 199
-        width: 50
-        height: 41
+        x: 200
+        y: 200
+        width: 48
+        height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -260,12 +260,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_4
       rect:
         serializedVersion: 2
-        x: 262
-        y: 199
-        width: 51
-        height: 42
+        x: 263
+        y: 200
+        width: 49
+        height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -282,12 +282,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_5
       rect:
         serializedVersion: 2
-        x: 329
-        y: 201
-        width: 48
-        height: 41
+        x: 330
+        y: 202
+        width: 46
+        height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -304,12 +304,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_6
       rect:
         serializedVersion: 2
-        x: 7
-        y: 133
-        width: 50
-        height: 44
+        x: 8
+        y: 134
+        width: 48
+        height: 42
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -326,12 +326,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_7
       rect:
         serializedVersion: 2
-        x: 71
-        y: 132
-        width: 50
-        height: 44
+        x: 72
+        y: 133
+        width: 48
+        height: 42
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -348,12 +348,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_8
       rect:
         serializedVersion: 2
-        x: 137
-        y: 131
-        width: 48
-        height: 44
+        x: 138
+        y: 132
+        width: 46
+        height: 42
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -370,12 +370,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_9
       rect:
         serializedVersion: 2
-        x: 199
-        y: 132
-        width: 50
-        height: 44
+        x: 200
+        y: 133
+        width: 48
+        height: 42
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -392,12 +392,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_10
       rect:
         serializedVersion: 2
-        x: 262
-        y: 133
-        width: 51
-        height: 44
+        x: 263
+        y: 134
+        width: 49
+        height: 42
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -414,12 +414,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_11
       rect:
         serializedVersion: 2
-        x: 329
-        y: 134
-        width: 48
-        height: 44
+        x: 330
+        y: 135
+        width: 46
+        height: 42
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -436,12 +436,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_12
       rect:
         serializedVersion: 2
-        x: 7
-        y: 72
-        width: 50
-        height: 41
+        x: 8
+        y: 73
+        width: 48
+        height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -458,12 +458,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_13
       rect:
         serializedVersion: 2
-        x: 64
-        y: 71
-        width: 55
-        height: 46
+        x: 65
+        y: 72
+        width: 53
+        height: 44
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -480,12 +480,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_14
       rect:
         serializedVersion: 2
-        x: 136
-        y: 72
-        width: 48
-        height: 42
+        x: 137
+        y: 73
+        width: 46
+        height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -502,12 +502,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_15
       rect:
         serializedVersion: 2
-        x: 199
-        y: 72
-        width: 50
-        height: 41
+        x: 200
+        y: 73
+        width: 48
+        height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -524,12 +524,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_16
       rect:
         serializedVersion: 2
-        x: 7
-        y: 8
-        width: 50
-        height: 41
+        x: 8
+        y: 9
+        width: 48
+        height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -546,12 +546,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_17
       rect:
         serializedVersion: 2
-        x: 64
-        y: 7
-        width: 55
-        height: 46
+        x: 65
+        y: 8
+        width: 53
+        height: 44
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -568,12 +568,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_18
       rect:
         serializedVersion: 2
-        x: 136
-        y: 8
-        width: 48
-        height: 42
+        x: 137
+        y: 9
+        width: 46
+        height: 40
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -590,12 +590,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_19
       rect:
         serializedVersion: 2
-        x: 202
-        y: 8
-        width: 48
-        height: 41
+        x: 203
+        y: 9
+        width: 46
+        height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -612,12 +612,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_20
       rect:
         serializedVersion: 2
-        x: 268
-        y: 7
-        width: 48
-        height: 39
+        x: 269
+        y: 8
+        width: 46
+        height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -634,12 +634,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_21
       rect:
         serializedVersion: 2
-        x: 330
-        y: 3
-        width: 47
-        height: 39
+        x: 331
+        y: 4
+        width: 45
+        height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -656,12 +656,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_22
       rect:
         serializedVersion: 2
-        x: 390
+        x: 391
         y: 0
-        width: 47
-        height: 37
+        width: 45
+        height: 36
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -678,12 +678,12 @@ TextureImporter:
       name: Cacodaemon Sprite Sheet_23
       rect:
         serializedVersion: 2
-        x: 449
+        x: 450
         y: 0
-        width: 48
-        height: 31
+        width: 46
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -700,7 +700,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b31262653f7c6464fabd34df13b2e824
     internalID: 0
     vertices: []
     indices: 
@@ -708,7 +708,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Cacodaemon Sprite Sheet_0: 6389790121533867865
       Cacodaemon Sprite Sheet_1: -3852113458823382303

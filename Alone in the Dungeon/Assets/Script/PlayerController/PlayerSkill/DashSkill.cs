@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using EnemyController;
+using GameFramework;
 
 namespace PlayerController
 {
@@ -31,6 +33,7 @@ namespace PlayerController
         private GameObject weaponObject;
         private Vector2 dashDirection;
         private bool isPaused; // 卡肉期间暂停物理更新
+        private HashSet<GameObject> damagedEnemies = new HashSet<GameObject>(); // 记录已伤害的敌人
         
         void Start()
         {
@@ -93,28 +96,43 @@ namespace PlayerController
         private void EndDash()
         {
             IsInvincible = false;
-            
+
             // 启用武器
             if (weaponObject != null)
                 weaponObject.SetActive(true);
-            
+
             // 关闭触发器模式，恢复与敌人的物理碰撞
             if (m_collider != null)
                 m_collider.isTrigger = false;
+
+            // 清空已伤害敌人列表
+            damagedEnemies.Clear();
         }
         
         // 与敌人的触发器碰撞检测
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (IsDashing() && other.CompareTag("Enemy"))
+            if (IsDashing() && other.CompareTag("Enemy") && !damagedEnemies.Contains(other.gameObject))
             {
-                // 调用敌人的受伤方法
+                // 标记该敌人已受伤
+                damagedEnemies.Add(other.gameObject);
+
+                // 优先使用EnemyHealth组件
                 EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
                 if (enemyHealth != null)
                 {
                     enemyHealth.TakeDamage(dashDamage);
-                    // 触发卡肉效果
                     TriggerHitStop();
+                }
+                else
+                {
+                    // 检查IDamageable接口（Boss等使用独立血量系统的敌人）
+                    IDamageable damageable = other.GetComponent<IDamageable>();
+                    if (damageable != null)
+                    {
+                        damageable.TakeDamage(dashDamage);
+                        TriggerHitStop();
+                    }
                 }
             }
         }

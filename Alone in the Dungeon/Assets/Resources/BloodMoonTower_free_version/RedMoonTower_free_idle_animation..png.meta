@@ -67,7 +67,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -81,7 +81,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -105,7 +105,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -133,12 +133,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._0
       rect:
         serializedVersion: 2
-        x: 15
-        y: 4
-        width: 70
-        height: 91
+        x: 16
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -155,12 +155,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._1
       rect:
         serializedVersion: 2
-        x: 115
-        y: 4
-        width: 70
-        height: 91
+        x: 116
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -177,12 +177,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._2
       rect:
         serializedVersion: 2
-        x: 215
-        y: 4
-        width: 70
-        height: 91
+        x: 216
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -199,12 +199,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._3
       rect:
         serializedVersion: 2
-        x: 315
-        y: 4
-        width: 70
-        height: 91
+        x: 316
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -221,12 +221,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._4
       rect:
         serializedVersion: 2
-        x: 415
-        y: 4
-        width: 70
-        height: 91
+        x: 416
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -243,12 +243,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._5
       rect:
         serializedVersion: 2
-        x: 515
-        y: 4
-        width: 70
-        height: 91
+        x: 516
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -265,12 +265,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._6
       rect:
         serializedVersion: 2
-        x: 615
-        y: 4
-        width: 70
-        height: 91
+        x: 616
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -287,12 +287,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._7
       rect:
         serializedVersion: 2
-        x: 715
-        y: 4
-        width: 70
-        height: 91
+        x: 716
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -309,12 +309,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._8
       rect:
         serializedVersion: 2
-        x: 815
-        y: 4
-        width: 70
-        height: 91
+        x: 816
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -331,12 +331,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._9
       rect:
         serializedVersion: 2
-        x: 915
-        y: 4
-        width: 70
-        height: 91
+        x: 916
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -353,12 +353,12 @@ TextureImporter:
       name: RedMoonTower_free_idle_animation._10
       rect:
         serializedVersion: 2
-        x: 1015
-        y: 4
-        width: 70
-        height: 91
+        x: 1016
+        y: 5
+        width: 68
+        height: 89
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -375,7 +375,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: f6c33ecc37434df4288e2e3c23ec4c26
     internalID: 0
     vertices: []
     indices: 
@@ -383,7 +383,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       RedMoonTower_free_idle_animation._0: -4227435001158437254
       RedMoonTower_free_idle_animation._1: -4233646917209677197

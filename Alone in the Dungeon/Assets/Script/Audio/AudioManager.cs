@@ -10,6 +10,8 @@ public class AudioManager : MonoBehaviour, GameFramework.IAudioService
     public AudioSource gameOverMusic;
     public AudioSource backGroundMusic;
     public AudioSource winGameMusic;
+    public AudioSource bossBattleMusic;      // Boss战音乐
+    public AudioSource bossSecondPhaseMusic; // Boss第二阶段音乐
 
     [Header("音效")]
     public AudioSource[] sfx;
@@ -119,6 +121,36 @@ public class AudioManager : MonoBehaviour, GameFramework.IAudioService
             backGroundMusic.Stop();
         }
         isGameScene = false;
+    }
+
+    public void PlayBossBattleMusic()
+    {
+        // 停止当前背景音乐
+        backGroundMusic?.Stop();
+
+        // 播放Boss战音乐
+        if (bossBattleMusic != null && !bossBattleMusic.isPlaying)
+        {
+            bossBattleMusic.Play();
+        }
+    }
+
+    public void PlayBossSecondPhaseMusic()
+    {
+        // 停止Boss战音乐
+        bossBattleMusic?.Stop();
+
+        // 播放第二阶段音乐
+        if (bossSecondPhaseMusic != null && !bossSecondPhaseMusic.isPlaying)
+        {
+            bossSecondPhaseMusic.Play();
+        }
+    }
+
+    public void StopBossMusic()
+    {
+        bossBattleMusic?.Stop();
+        bossSecondPhaseMusic?.Stop();
     }
 
     void OnDestroy()
