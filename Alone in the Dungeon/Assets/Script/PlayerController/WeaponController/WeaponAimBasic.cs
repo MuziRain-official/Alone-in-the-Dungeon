@@ -1,5 +1,8 @@
 /* WeaponAimBasic.cs
  * 基础武器瞄准脚本
+ * 支持两种模式：
+ * 1. 作为玩家子对象时，通过 transform.parent 自动获取玩家引用
+ * 2. 独立存在时，通过 SetPlayerTransform 显式设置玩家引用
  */
 
 using UnityEngine;
@@ -11,22 +14,40 @@ namespace PlayerController
     {
         private Camera m_mainCamera;
         private Transform m_playerTransform;
-        
+        private bool m_useExplicitPlayerRef = false;  // 是否使用显式设置的玩家引用
+
         void Start()
         {
             m_mainCamera = Camera.main;
-            m_playerTransform = transform.parent;
+
+            // 如果没有显式设置玩家引用，则尝试从父对象获取（保持向后兼容）
+            if (!m_useExplicitPlayerRef)
+            {
+                m_playerTransform = transform.parent;
+            }
         }
-        
+
+        /// <summary>
+        /// 显式设置玩家变换引用（供 WeaponManager 调用）
+        /// </summary>
+        public void SetPlayerTransform(Transform playerTransform)
+        {
+            m_playerTransform = playerTransform;
+            m_useExplicitPlayerRef = playerTransform != null;
+        }
+
         void Update()
         {
             // 更新武器朝向
             UpdateWeaponRotation();
-            
-            // 如果角色翻转了，武器也翻转来"正过来"
-            transform.localScale = m_playerTransform.localScale.x < 0 
-                ? new Vector3(-1, -1, 1) 
-                : Vector3.one;
+
+            // 如果有玩家引用，根据玩家朝向调整武器翻转
+            if (m_playerTransform != null)
+            {
+                transform.localScale = m_playerTransform.localScale.x < 0
+                    ? new Vector3(-1, -1, 1)
+                    : Vector3.one;
+            }
         }
         
         private void UpdateWeaponRotation()

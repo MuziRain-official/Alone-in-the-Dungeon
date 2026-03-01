@@ -1,0 +1,24 @@
+备份时间: 2026-03-02
+备份原因: 将武器从玩家子对象分离，创建独立武器管理系统
+
+重要信息:
+1. InputSystem 配置:
+   - Attack 事件绑定到 Weapon 子对象的 WeaponFire.OnFire 方法
+   - PlayerInput 组件在 Player 根对象上 (fileID: 3330299884603453995)
+   - Action Events 中索引 2 (ActionId: 6c2ab1b8-8984-453a-af3d-a3c78ae1679a) 是 Attack
+   - 绑定目标: {fileID: 7240440170453341580} - WeaponFire 组件
+
+2. 玩家层级结构:
+   - Player (根, fileID: 5927384441001430321)
+     - PlayerSR (SpriteRenderer)
+     - Weapon (子对象, fileID: 2570932527484742626)
+       - WeaponSR (SpriteRenderer)
+       - FirePoint (Transform)
+
+3. Weapon 子对象挂载的组件:
+   - WeaponController (fileID: 8354250143170658585)
+   - WeaponFire (fileID: 7240440170453341580)
+
+4. WeaponAimBasic 依赖父对象:
+   - 通过 transform.parent 获取 m_playerTransform
+   - 用于处理角色翻转时武器也翻转
