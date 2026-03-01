@@ -127,5 +127,14 @@ namespace GameFramework
         public bool isPaused;
     }
 
+    /// <summary>
+    /// Boss激活事件
+    /// </summary>
+    public struct BossActivationEvent
+    {
+        public GameObject boss;
+        public EnemyController.EnemyHealth bossHealth;
+    }
+
     #endregion
 }

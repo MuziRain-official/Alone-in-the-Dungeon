@@ -1,4 +1,6 @@
+using PlayerController;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -7,11 +9,22 @@ public class PlayerInteract : MonoBehaviour
     /// <summary>
     /// 由 PlayerInput 的事件调用的方法
     /// </summary>
-    public void TryInteract()
+    public void TryInteract(InputAction.CallbackContext context)
     {
+        // 只在按键按下时触发
+        if (!context.started) return;
+
+        // 处理门交互
         if (currentDoor != null)
         {
-            currentDoor.Interact(); // 让当前门处理交互
+            currentDoor.Interact();
+        }
+
+        // 处理武器拾取（如果WeaponController存在）
+        WeaponController weaponController = GetComponent<WeaponController>();
+        if (weaponController != null)
+        {
+            weaponController.TryPickupWeapon();
         }
     }
 

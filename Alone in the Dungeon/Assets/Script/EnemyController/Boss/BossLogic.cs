@@ -132,6 +132,13 @@ public class BossLogic : MonoBehaviour
             AudioManager.instance.PlayBossBattleMusic();
         }
 
+        // 发布Boss激活事件（用于显示血条）
+        eventManager?.Publish(new GameFramework.BossActivationEvent
+        {
+            boss = gameObject,
+            bossHealth = enemyHealth
+        });
+
         // 随机选择初始行为
         ChooseRandomBehavior();
     }

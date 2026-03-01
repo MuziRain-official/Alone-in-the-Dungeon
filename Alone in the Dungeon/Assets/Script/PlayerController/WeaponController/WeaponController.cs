@@ -114,10 +114,11 @@ namespace PlayerController
                 weapon.transform.localPosition = Vector3.zero;
                 weapon.transform.localRotation = Quaternion.identity;
 
-                // 设置 WeaponAimBasic 的玩家引用
+                // 设置 WeaponAimBasic 的玩家引用并启用
                 if (weapon.TryGetComponent(out WeaponAimBasic aimBasic))
                 {
                     aimBasic.SetPlayerTransform(transform);
+                    aimBasic.SetEquipped(true);
                 }
 
                 // 确保激活
@@ -148,6 +149,12 @@ namespace PlayerController
         {
             if (currentEquippedWeapon != null)
             {
+                // 禁用 WeaponAimBasic
+                if (currentEquippedWeapon.TryGetComponent(out WeaponAimBasic aimBasic))
+                {
+                    aimBasic.SetEquipped(false);
+                }
+
                 // 移到世界空间
                 currentEquippedWeapon.transform.SetParent(null);
 

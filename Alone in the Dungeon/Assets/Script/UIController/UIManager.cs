@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour, IUIService
 
     [Header("UI组件")]
     public Slider HealthBar;
+    public Slider BossHealthSlider;
     public GameObject GameOverPanel;
     public GameObject PauseMenu;
 
@@ -16,6 +17,10 @@ public class UIManager : MonoBehaviour, IUIService
     public string MainMenu;
 
     public bool isPaused;
+
+    // Boss血条相关
+    private EnemyController.EnemyHealth currentBossHealth;
+    private bool isBossActive = false;
 
     private EventManager eventManager;
 
@@ -51,6 +56,9 @@ public class UIManager : MonoBehaviour, IUIService
         eventManager?.Subscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
         eventManager?.Subscribe<PlayerHealEvent>(OnPlayerHealEvent);
         eventManager?.Subscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
+
+        // 订阅Boss激活事件
+        eventManager?.Subscribe<BossActivationEvent>(OnBossActivationEvent);
     }
 
     // 通过事件中心处理
@@ -67,6 +75,12 @@ public class UIManager : MonoBehaviour, IUIService
     private void OnPlayerDeathEvent(PlayerDeathEvent e)
     {
         ShowGameOverPanel();
+    }
+
+    // Boss激活事件处理
+    private void OnBossActivationEvent(BossActivationEvent e)
+    {
+        ShowBossHealthBar(e.bossHealth);
     }
 
     // 直接回调处理（兼容）
@@ -130,6 +144,80 @@ public class UIManager : MonoBehaviour, IUIService
         eventManager?.Publish(new GamePauseEvent { isPaused = isPaused });
     }
 
+    #region Boss血条管理
+
+    /// <summary>
+    /// 显示Boss血条
+    /// </summary>
+    public void ShowBossHealthBar(EnemyController.EnemyHealth bossHealth)
+    {
+        if (BossHealthSlider == null) return;
+
+        currentBossHealth = bossHealth;
+        isBossActive = true;
+
+        // 设置血条初始值
+        if (bossHealth != null)
+        {
+            BossHealthSlider.maxValue = bossHealth.MaxHealth;
+            BossHealthSlider.value = bossHealth.CurrentHealth;
+            BossHealthSlider.gameObject.SetActive(true);
+
+            // 订阅受伤和死亡事件
+            bossHealth.OnDamaged += OnBossDamaged;
+            bossHealth.OnDied += OnBossDied;
+        }
+    }
+
+    /// <summary>
+    /// 隐藏Boss血条
+    /// </summary>
+    public void HideBossHealthBar()
+    {
+        if (BossHealthSlider != null)
+        {
+            BossHealthSlider.gameObject.SetActive(false);
+        }
+
+        // 取消订阅事件
+        if (currentBossHealth != null)
+        {
+            currentBossHealth.OnDamaged -= OnBossDamaged;
+            currentBossHealth.OnDied -= OnBossDied;
+            currentBossHealth = null;
+        }
+
+        isBossActive = false;
+    }
+
+    /// <summary>
+    /// 更新Boss血条
+    /// </summary>
+    public void UpdateBossHealth(float currentHealth, float maxHealth)
+    {
+        if (BossHealthSlider != null && isBossActive)
+        {
+            BossHealthSlider.maxValue = maxHealth;
+            BossHealthSlider.value = currentHealth;
+        }
+    }
+
+    private void OnBossDamaged(float damage)
+    {
+        if (currentBossHealth != null)
+        {
+            UpdateBossHealth(currentBossHealth.CurrentHealth, currentBossHealth.MaxHealth);
+        }
+    }
+
+    private void OnBossDied()
+    {
+        // 延迟隐藏血条，让玩家看到Boss死亡
+        Invoke(nameof(HideBossHealthBar), 1.5f);
+    }
+
+    #endregion
+
     public void ResumeGame()
     {
         isPaused = false;
@@ -185,6 +273,7 @@ public class UIManager : MonoBehaviour, IUIService
             eventManager.Unsubscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
             eventManager.Unsubscribe<PlayerHealEvent>(OnPlayerHealEvent);
             eventManager.Unsubscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
+            eventManager.Unsubscribe<BossActivationEvent>(OnBossActivationEvent);
         }
     }
 }

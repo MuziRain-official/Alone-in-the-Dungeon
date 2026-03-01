@@ -14,34 +14,61 @@ namespace PlayerController
     {
         private Camera m_mainCamera;
         private Transform m_playerTransform;
-        private bool m_useExplicitPlayerRef = false;  // 是否使用显式设置的玩家引用
+        private bool m_isEquipped = false;  // 武器是否被装备
 
         void Start()
         {
             m_mainCamera = Camera.main;
 
-            // 如果没有显式设置玩家引用，则尝试从父对象获取（保持向后兼容）
-            if (!m_useExplicitPlayerRef)
+            // 检查是否已被装备（通过父对象是否为 WeaponPoint）
+            CheckIfEquipped();
+        }
+
+        /// <summary>
+        /// 检查武器是否被装备
+        /// </summary>
+        private void CheckIfEquipped()
+        {
+            if (transform.parent != null && transform.parent.name == "WeaponPoint")
             {
-                m_playerTransform = transform.parent;
+                m_isEquipped = true;
+                m_playerTransform = transform.parent.parent;  // WeaponPoint 的父对象是 Player
+                enabled = true;
+            }
+            else
+            {
+                m_isEquipped = false;
+                enabled = false;  // 未装备时禁用脚本
             }
         }
 
         /// <summary>
-        /// 显式设置玩家变换引用（供 WeaponManager 调用）
+        /// 显式设置玩家变换引用（供 WeaponController 调用）
         /// </summary>
         public void SetPlayerTransform(Transform playerTransform)
         {
             m_playerTransform = playerTransform;
-            m_useExplicitPlayerRef = playerTransform != null;
+            m_isEquipped = playerTransform != null;
+        }
+
+        /// <summary>
+        /// 设置武器为已装备状态
+        /// </summary>
+        public void SetEquipped(bool equipped)
+        {
+            m_isEquipped = equipped;
+            enabled = equipped;
         }
 
         void Update()
         {
+            // 未装备时不执行任何操作
+            if (!m_isEquipped) return;
+
             // 更新武器朝向
             UpdateWeaponRotation();
 
-            // 如果有玩家引用，根据玩家朝向调整武器翻转
+            // 根据玩家朝向调整武器翻转
             if (m_playerTransform != null)
             {
                 transform.localScale = m_playerTransform.localScale.x < 0

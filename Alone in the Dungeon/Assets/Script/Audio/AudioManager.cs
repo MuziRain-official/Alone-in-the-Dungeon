@@ -124,6 +124,8 @@ public class AudioManager : MonoBehaviour, GameFramework.IAudioService
         {
             backGroundMusic.Stop();
         }
+        // 停止Boss战音乐
+        StopBossMusic();
         isGameScene = false;
     }
 
