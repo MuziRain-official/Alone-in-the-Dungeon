@@ -24,11 +24,14 @@ namespace EnemyController
         // 兼容旧事件
         public event Action OnHurt;
 
-        private GameFramework.EventManager eventManager;
+        // 是否是Boss
+        private bool isBoss;
 
         void Start()
         {
             currentHealth = maxHealth;
+            // 检查是否是Boss
+            isBoss = GetComponent<BossLogic>() != null;
         }
 
         public void TakeDamage(int damage)
@@ -39,11 +42,7 @@ namespace EnemyController
             OnDamaged?.Invoke(damage);
             OnHurt?.Invoke();
 
-            // 通过事件中心发布受伤事件
-            eventManager = GameFramework.EventManager.Instance;
-            eventManager?.Publish(new GameFramework.EnemyDeathEvent { enemy = gameObject });
-
-            // 播放音效 - 优先使用服务定位器，备用直接调用
+            // 播放音效 - 优先使用服务定位器，备用单例
             var audioService = GameFramework.ServiceLocator.Instance?.Get<GameFramework.IAudioService>();
             if (audioService != null)
             {
@@ -52,6 +51,17 @@ namespace EnemyController
             else if (AudioManager.instance != null)
             {
                 AudioManager.instance.PlaySFX(3);
+            }
+
+            // 只有Boss才发布受伤事件（用于更新Boss血条）
+            if (isBoss)
+            {
+                GameFramework.EventManager.Instance?.Publish(new GameFramework.BossDamageEvent
+                {
+                    boss = gameObject,
+                    currentHealth = currentHealth,
+                    maxHealth = maxHealth
+                });
             }
 
             if (currentHealth <= 0)
@@ -71,7 +81,10 @@ namespace EnemyController
             OnDied?.Invoke();
 
             // 通过事件中心发布死亡事件
-            eventManager?.Publish(new GameFramework.EnemyDeathEvent { enemy = gameObject });
+            if (GameFramework.EventManager.Instance != null)
+            {
+                GameFramework.EventManager.Instance.Publish(new GameFramework.EnemyDeathEvent { enemy = gameObject });
+            }
 
             // 延迟销毁，让订阅者有时间响应
             Destroy(gameObject, 0.1f);

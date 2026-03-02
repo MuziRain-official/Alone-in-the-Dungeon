@@ -80,6 +80,14 @@ namespace GameFramework
             service = null;
             return false;
         }
+
+        /// <summary>
+        /// 清空所有服务（用于游戏重新开始时）
+        /// </summary>
+        public void ClearAll()
+        {
+            _services.Clear();
+        }
     }
 
     #region 服务接口定义

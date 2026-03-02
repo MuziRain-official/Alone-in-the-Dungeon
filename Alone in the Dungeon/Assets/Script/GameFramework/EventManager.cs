@@ -56,6 +56,14 @@ namespace GameFramework
         }
 
         /// <summary>
+        /// 清空所有事件订阅（用于游戏重新开始时）
+        /// </summary>
+        public void ClearAllEvents()
+        {
+            _events.Clear();
+        }
+
+        /// <summary>
         /// 发布事件
         /// </summary>
         public void Publish<T>(T eventData) where T : struct
@@ -134,6 +142,16 @@ namespace GameFramework
     {
         public GameObject boss;
         public EnemyController.EnemyHealth bossHealth;
+    }
+
+    /// <summary>
+    /// Boss受伤事件
+    /// </summary>
+    public struct BossDamageEvent
+    {
+        public GameObject boss;
+        public float currentHealth;
+        public float maxHealth;
     }
 
     #endregion

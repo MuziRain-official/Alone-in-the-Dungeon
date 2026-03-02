@@ -28,7 +28,6 @@ namespace PlayerController
         public event Action<float> OnHeal;
 
         private DashSkill dashSkill;
-        private GameFramework.EventManager eventManager;
 
         void Awake()
         {
@@ -71,11 +70,11 @@ namespace PlayerController
 
             currentHealth -= damage;
 
-            // 播放受伤音效 - 优先使用服务定位器，备用直接调用
+            // 播放受伤音效 - 优先使用服务定位器，备用单例
             var audioService = GameFramework.ServiceLocator.Instance?.Get<GameFramework.IAudioService>();
             if (audioService != null)
             {
-                audioService.PlaySFX(1); // 受伤音效
+                audioService.PlaySFX(1);
             }
             else if (AudioManager.instance != null)
             {
@@ -86,8 +85,7 @@ namespace PlayerController
             OnDamage?.Invoke(damage);
 
             // 通过事件中心发布受伤事件
-            eventManager = GameFramework.EventManager.Instance;
-            eventManager?.Publish(new GameFramework.PlayerDamageEvent
+            GameFramework.EventManager.Instance?.Publish(new GameFramework.PlayerDamageEvent
             {
                 damage = damage,
                 currentHealth = currentHealth,
@@ -105,11 +103,11 @@ namespace PlayerController
         {
             OnDied?.Invoke();
 
-            // 播放死亡音效
+            // 播放死亡音效 - 优先使用服务定位器，备用单例
             var audioService = GameFramework.ServiceLocator.Instance?.Get<GameFramework.IAudioService>();
             if (audioService != null)
             {
-                audioService.PlaySFX(6); // 死亡音效
+                audioService.PlaySFX(6);
             }
             else if (AudioManager.instance != null)
             {
@@ -117,7 +115,7 @@ namespace PlayerController
             }
 
             // 通过事件中心发布死亡事件
-            eventManager?.Publish(new GameFramework.PlayerDeathEvent());
+            GameFramework.EventManager.Instance?.Publish(new GameFramework.PlayerDeathEvent());
 
             // 延迟销毁，让订阅者有时间响应
             Destroy(gameObject, 0.1f);
@@ -133,11 +131,11 @@ namespace PlayerController
                 currentHealth = maxHealth;
             }
 
-            // 播放治愈音效
+            // 播放治愈音效 - 优先使用服务定位器，备用单例
             var audioService = GameFramework.ServiceLocator.Instance?.Get<GameFramework.IAudioService>();
             if (audioService != null)
             {
-                audioService.PlaySFX(2); // 治愈音效
+                audioService.PlaySFX(2);
             }
             else if (AudioManager.instance != null)
             {
@@ -148,8 +146,7 @@ namespace PlayerController
             OnHeal?.Invoke(healAmount);
 
             // 通过事件中心发布治愈事件
-            eventManager = GameFramework.EventManager.Instance;
-            eventManager?.Publish(new GameFramework.PlayerHealEvent
+            GameFramework.EventManager.Instance?.Publish(new GameFramework.PlayerHealEvent
             {
                 healAmount = healAmount,
                 currentHealth = currentHealth,

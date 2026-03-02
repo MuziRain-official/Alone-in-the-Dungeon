@@ -33,6 +33,9 @@ public class BossLogic : MonoBehaviour
     [Header("碰撞伤害设置")]
     public float damageCooldown = 0.5f;         // 撞击伤害冷却时间
 
+    [Header("Tower设置")]
+    public TowerController tower;  // Boss房间的塔楼
+
     // 当前状态
     private enum BossState
     {
@@ -151,8 +154,8 @@ public class BossLogic : MonoBehaviour
             anim.SetTrigger("isHurt");
         }
 
-        // 检查血量是否过半（首次低于一半时切换到第二阶段音乐）
-        if (!hasPlayedHalfHealthSfx && enemyHealth.CurrentHealth <= enemyHealth.MaxHealth / 2)
+        // 检查血量是否低于60%（首次低于60%时切换到第二阶段音乐）
+        if (!hasPlayedHalfHealthSfx && enemyHealth.CurrentHealth <= enemyHealth.MaxHealth * 0.6f)
         {
             hasPlayedHalfHealthSfx = true;
             if (AudioManager.instance != null)
@@ -180,6 +183,22 @@ public class BossLogic : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
+        }
+
+        // 停止Boss战音乐并播放胜利音乐
+        if (AudioManager.instance != null)
+        {
+            AudioManager.instance.StopBossMusic();
+            if (AudioManager.instance.winGameMusic != null)
+            {
+                AudioManager.instance.winGameMusic.Play();
+            }
+        }
+
+        // 激活Tower
+        if (tower != null)
+        {
+            tower.ActivateTower();
         }
     }
 
@@ -283,11 +302,24 @@ public class BossLogic : MonoBehaviour
 
     private void ChooseRandomBehavior()
     {
-        // 如果刚完成射击，必须移动到其他点
+        // 检查是否进入二阶段（血量低于50%）
+        bool isSecondPhase = enemyHealth != null && enemyHealth.CurrentHealth <= enemyHealth.MaxHealth * 0.6f;
+
+        // 如果刚完成射击，二阶段时60%概率追击玩家，一阶段必须移动到其他点
         if (justFinishedShooting)
         {
             justFinishedShooting = false;
-            // 只有存在多个固定点时才能移动到其他点
+
+            // 二阶段：60%概率追击玩家，40%概率移动到其他点
+            if (isSecondPhase && playerTransform != null && UnityEngine.Random.value > 0.4f)
+            {
+                currentState = BossState.ChasePlayer;
+                stateTimer = chaseDuration;
+                isMoving = true;
+                return;
+            }
+
+            // 一阶段或二阶段40%概率：移动到其他点
             if (movePoints != null && movePoints.Length > 1)
             {
                 int newIndex;
@@ -300,17 +332,14 @@ public class BossLogic : MonoBehaviour
                 isMoving = true;
                 return;
             }
-            // 只有一个或没有固定点时，进入Idle等待，不立即再次射击
+            // 只有一个或没有固定点时，进入Idle等待
             currentState = BossState.Idle;
             stateTimer = 2f;
             return;
         }
 
-        // 60%概率追击玩家（二阶段才能追击）
-        bool chasePlayer = UnityEngine.Random.value > 0.4f;
-
-        // 检查是否进入二阶段（血量低于50%）
-        bool isSecondPhase = enemyHealth != null && enemyHealth.CurrentHealth <= enemyHealth.MaxHealth * 0.5f;
+        // 40%概率追击玩家（一阶段不追击，二阶段才能追击）
+        bool chasePlayer = UnityEngine.Random.value > 0.6f;
 
         if (chasePlayer && playerTransform != null && isSecondPhase)
         {
@@ -385,6 +414,7 @@ public class BossLogic : MonoBehaviour
             shootTimer = shootInterval;
         }
 
+        // 射击持续时间结束，切换到Idle选择下一个行为
         if (stateTimer <= 0)
         {
             currentState = BossState.Idle;
@@ -400,16 +430,6 @@ public class BossLogic : MonoBehaviour
                 } while (newIndex == currentPointIndex);
                 currentPointIndex = newIndex;
             }
-        }
-
-        // 二阶段才能从射击切换到追击
-        bool isSecondPhase = enemyHealth != null && enemyHealth.CurrentHealth <= enemyHealth.MaxHealth * 0.5f;
-
-        if (playerTransform != null && isSecondPhase)
-        {
-            currentState = BossState.ChasePlayer;
-            stateTimer = chaseDuration;
-            isMoving = true;
         }
     }
 

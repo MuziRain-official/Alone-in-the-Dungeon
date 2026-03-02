@@ -59,7 +59,7 @@ public class Room : MonoBehaviour
         if (enemyCount <= 0)
         {
             OpenDoors();
-            // 播放房间清理音效
+            // 播放房间清理音效 - 优先使用服务定位器，备用单例
             if (audioService != null)
             {
                 audioService.PlaySFX(5);

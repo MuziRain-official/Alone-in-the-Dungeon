@@ -44,21 +44,15 @@ public class UIManager : MonoBehaviour, IUIService
     {
         eventManager = EventManager.Instance;
 
-        // 订阅事件
-        if (PlayerController.PlayerHealth.Instance != null)
-        {
-            PlayerController.PlayerHealth.Instance.OnDamaged += OnPlayerDamaged;
-            PlayerController.PlayerHealth.Instance.OnHealed += OnPlayerHealed;
-            PlayerController.PlayerHealth.Instance.OnDied += OnPlayerDied;
-        }
-
-        // 也订阅事件中心
+        // 统一使用事件中心订阅
         eventManager?.Subscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
         eventManager?.Subscribe<PlayerHealEvent>(OnPlayerHealEvent);
         eventManager?.Subscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
 
-        // 订阅Boss激活事件
+        // 订阅Boss相关事件
         eventManager?.Subscribe<BossActivationEvent>(OnBossActivationEvent);
+        eventManager?.Subscribe<BossDamageEvent>(OnBossDamageEvent);
+        eventManager?.Subscribe<EnemyDeathEvent>(OnEnemyDeathEvent);
     }
 
     // 通过事件中心处理
@@ -83,28 +77,21 @@ public class UIManager : MonoBehaviour, IUIService
         ShowBossHealthBar(e.bossHealth);
     }
 
-    // 直接回调处理（兼容）
-    private void OnPlayerDamaged(float damage)
+    // Boss受伤事件处理
+    private void OnBossDamageEvent(BossDamageEvent e)
     {
-        var player = PlayerController.PlayerHealth.Instance;
-        if (player != null)
-        {
-            UpdateHealthBar(player.CurrentHealth, player.MaxHealth);
-        }
+        UpdateBossHealth(e.currentHealth, e.maxHealth);
     }
 
-    private void OnPlayerHealed(float healAmount)
+    // 敌人死亡事件处理（用于Boss死亡）
+    private void OnEnemyDeathEvent(EnemyDeathEvent e)
     {
-        var player = PlayerController.PlayerHealth.Instance;
-        if (player != null)
+        // 检查是否是Boss死亡
+        if (currentBossHealth != null && e.enemy == currentBossHealth.gameObject)
         {
-            UpdateHealthBar(player.CurrentHealth, player.MaxHealth);
+            // 延迟隐藏血条，让玩家看到Boss死亡
+            Invoke(nameof(HideBossHealthBar), 1.5f);
         }
-    }
-
-    private void OnPlayerDied()
-    {
-        ShowGameOverPanel();
     }
 
     // IUIService 实现
@@ -162,10 +149,6 @@ public class UIManager : MonoBehaviour, IUIService
             BossHealthSlider.maxValue = bossHealth.MaxHealth;
             BossHealthSlider.value = bossHealth.CurrentHealth;
             BossHealthSlider.gameObject.SetActive(true);
-
-            // 订阅受伤和死亡事件
-            bossHealth.OnDamaged += OnBossDamaged;
-            bossHealth.OnDied += OnBossDied;
         }
     }
 
@@ -179,14 +162,7 @@ public class UIManager : MonoBehaviour, IUIService
             BossHealthSlider.gameObject.SetActive(false);
         }
 
-        // 取消订阅事件
-        if (currentBossHealth != null)
-        {
-            currentBossHealth.OnDamaged -= OnBossDamaged;
-            currentBossHealth.OnDied -= OnBossDied;
-            currentBossHealth = null;
-        }
-
+        currentBossHealth = null;
         isBossActive = false;
     }
 
@@ -200,20 +176,6 @@ public class UIManager : MonoBehaviour, IUIService
             BossHealthSlider.maxValue = maxHealth;
             BossHealthSlider.value = currentHealth;
         }
-    }
-
-    private void OnBossDamaged(float damage)
-    {
-        if (currentBossHealth != null)
-        {
-            UpdateBossHealth(currentBossHealth.CurrentHealth, currentBossHealth.MaxHealth);
-        }
-    }
-
-    private void OnBossDied()
-    {
-        // 延迟隐藏血条，让玩家看到Boss死亡
-        Invoke(nameof(HideBossHealthBar), 1.5f);
     }
 
     #endregion
@@ -230,8 +192,19 @@ public class UIManager : MonoBehaviour, IUIService
 
     public void RestartGame()
     {
-        // 停止背景音乐
-        if (AudioManager.instance != null)
+        // 清空所有事件订阅，防止重新开始时事件累积
+        eventManager?.ClearAllEvents();
+
+        // 清空所有服务，防止重新开始时服务累积
+        ServiceLocator.Instance?.ClearAll();
+
+        // 停止背景音乐 - 优先使用服务定位器，备用单例
+        var audioService = ServiceLocator.Instance?.Get<IAudioService>();
+        if (audioService != null)
+        {
+            audioService.StopMusic();
+        }
+        else if (AudioManager.instance != null)
         {
             AudioManager.instance.StopMusic();
         }
@@ -242,8 +215,19 @@ public class UIManager : MonoBehaviour, IUIService
 
     public void ReturnToMainMenu()
     {
+        // 清空所有事件订阅，防止返回主菜单时事件累积
+        eventManager?.ClearAllEvents();
+
+        // 清空所有服务，防止返回主菜单时服务累积
+        ServiceLocator.Instance?.ClearAll();
+
         // 停止背景音乐，避免与主菜单音乐重叠
-        if (AudioManager.instance != null)
+        var audioService = ServiceLocator.Instance?.Get<IAudioService>();
+        if (audioService != null)
+        {
+            audioService.StopMusic();
+        }
+        else if (AudioManager.instance != null)
         {
             AudioManager.instance.StopMusic();
         }
@@ -260,20 +244,15 @@ public class UIManager : MonoBehaviour, IUIService
             ServiceLocator.Instance.Unregister<IUIService>();
         }
 
-        // 取消订阅事件
-        if (PlayerController.PlayerHealth.Instance != null)
-        {
-            PlayerController.PlayerHealth.Instance.OnDamaged -= OnPlayerDamaged;
-            PlayerController.PlayerHealth.Instance.OnHealed -= OnPlayerHealed;
-            PlayerController.PlayerHealth.Instance.OnDied -= OnPlayerDied;
-        }
-
+        // 取消事件中心订阅
         if (eventManager != null)
         {
             eventManager.Unsubscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
             eventManager.Unsubscribe<PlayerHealEvent>(OnPlayerHealEvent);
             eventManager.Unsubscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
             eventManager.Unsubscribe<BossActivationEvent>(OnBossActivationEvent);
+            eventManager.Unsubscribe<BossDamageEvent>(OnBossDamageEvent);
+            eventManager.Unsubscribe<EnemyDeathEvent>(OnEnemyDeathEvent);
         }
     }
 }
