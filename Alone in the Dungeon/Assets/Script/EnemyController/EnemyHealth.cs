@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
+using GameFramework;
 
 namespace EnemyController
 {
     /// <summary>
     /// 敌人生命值管理 - 实现 IDamageable 接口
     /// </summary>
-    public class EnemyHealth : MonoBehaviour, GameFramework.IDamageable
+    public class EnemyHealth : MonoBehaviour, IDamageable, IGameModule
     {
         [Header("生命值设置")]
         public int maxHealth = 20;
@@ -27,12 +28,25 @@ namespace EnemyController
         // 是否是Boss
         private bool isBoss;
 
+        void Awake()
+        {
+            LifecycleManager.RegisterModule(this);
+        }
+
         void Start()
         {
             currentHealth = maxHealth;
             // 检查是否是Boss
             isBoss = GetComponent<BossLogic>() != null;
         }
+
+        public void RegisterEvents()
+        {
+            EventManager.Instance.Register<EnemyDeathEvent>();
+            EventManager.Instance.Register<BossDamageEvent>();
+        }
+
+        public void SubscribeEvents() { }
 
         public void TakeDamage(int damage)
         {
@@ -56,7 +70,7 @@ namespace EnemyController
             // 只有Boss才发布受伤事件（用于更新Boss血条）
             if (isBoss)
             {
-                GameFramework.EventManager.Instance?.Publish(new GameFramework.BossDamageEvent
+                EventManager.Instance?.Publish(new BossDamageEvent
                 {
                     boss = gameObject,
                     currentHealth = currentHealth,
@@ -81,9 +95,9 @@ namespace EnemyController
             OnDied?.Invoke();
 
             // 通过事件中心发布死亡事件
-            if (GameFramework.EventManager.Instance != null)
+            if (EventManager.Instance != null)
             {
-                GameFramework.EventManager.Instance.Publish(new GameFramework.EnemyDeathEvent { enemy = gameObject });
+                EventManager.Instance.Publish(new EnemyDeathEvent { enemy = gameObject });
             }
 
             // 延迟销毁，让订阅者有时间响应

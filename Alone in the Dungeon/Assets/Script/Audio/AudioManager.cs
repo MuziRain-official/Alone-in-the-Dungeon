@@ -164,6 +164,12 @@ public class AudioManager : MonoBehaviour, GameFramework.IAudioService
         // 取消场景加载订阅
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
+        // 取消玩家死亡事件订阅
+        if (PlayerController.PlayerHealth.Instance != null)
+        {
+            PlayerController.PlayerHealth.Instance.OnDied -= GameOver;
+        }
+
         // 注销服务
         if (GameFramework.ServiceLocator.Instance != null)
         {

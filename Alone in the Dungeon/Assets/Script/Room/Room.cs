@@ -4,15 +4,26 @@ using UnityEngine;
 using GameFramework;
 using EnemyController;
 
-public class Room : MonoBehaviour
+public class Room : MonoBehaviour, IGameModule
 {
     [Header("房间设置")]
     public GameObject[] doors;
     private int enemyCount;
     private List<EnemyHealth> enemies = new List<EnemyHealth>();
-
-    private EventManager eventManager;
     private IAudioService audioService;
+
+    void Awake()
+    {
+        LifecycleManager.RegisterModule(this);
+    }
+
+    public void RegisterEvents()
+    {
+        EventManager.Instance.Register<RoomClearedEvent>();
+        EventManager.Instance.Register<PlayerEnterRoomEvent>();
+    }
+
+    public void SubscribeEvents() { }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -23,14 +34,13 @@ public class Room : MonoBehaviour
             CloseDoors();
 
             // 发布玩家进入房间事件
-            eventManager?.Publish(new PlayerEnterRoomEvent { room = gameObject });
+            EventManager.Instance?.Publish(new PlayerEnterRoomEvent { room = gameObject });
         }
     }
 
     void Start()
     {
         // 获取服务
-        eventManager = EventManager.Instance;
         audioService = ServiceLocator.Instance?.Get<IAudioService>();
 
         // 查找敌人
@@ -68,7 +78,7 @@ public class Room : MonoBehaviour
             {
                 AudioManager.instance.PlaySFX(5);
             }
-            eventManager?.Publish(new RoomClearedEvent { room = gameObject });
+            EventManager.Instance?.Publish(new RoomClearedEvent { room = gameObject });
         }
         else
         {

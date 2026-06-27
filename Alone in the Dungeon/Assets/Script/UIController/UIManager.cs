@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using GameFramework;
+using PlayerController;
+using EnemyController;
 
-public class UIManager : MonoBehaviour, IUIService
+public class UIManager : MonoBehaviour, IUIService, IGameModule
 {
     public static UIManager Instance;
 
@@ -19,10 +21,8 @@ public class UIManager : MonoBehaviour, IUIService
     public bool isPaused;
 
     // Boss血条相关
-    private EnemyController.EnemyHealth currentBossHealth;
+    private EnemyHealth currentBossHealth;
     private bool isBossActive = false;
-
-    private EventManager eventManager;
 
     void Awake()
     {
@@ -33,6 +33,9 @@ public class UIManager : MonoBehaviour, IUIService
         }
         Instance = this;
 
+        // 注册到生命周期管理器
+        LifecycleManager.RegisterModule(this);
+
         // 注册到服务定位器
         if (ServiceLocator.Instance != null)
         {
@@ -40,19 +43,22 @@ public class UIManager : MonoBehaviour, IUIService
         }
     }
 
-    void Start()
+    public void RegisterEvents()
     {
-        eventManager = EventManager.Instance;
+        // UI 模块不产生业务事件
+    }
 
+    public void SubscribeEvents()
+    {
         // 统一使用事件中心订阅
-        eventManager?.Subscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
-        eventManager?.Subscribe<PlayerHealEvent>(OnPlayerHealEvent);
-        eventManager?.Subscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
+        EventManager.Instance?.Subscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
+        EventManager.Instance?.Subscribe<PlayerHealEvent>(OnPlayerHealEvent);
+        EventManager.Instance?.Subscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
 
         // 订阅Boss相关事件
-        eventManager?.Subscribe<BossActivationEvent>(OnBossActivationEvent);
-        eventManager?.Subscribe<BossDamageEvent>(OnBossDamageEvent);
-        eventManager?.Subscribe<EnemyDeathEvent>(OnEnemyDeathEvent);
+        EventManager.Instance?.Subscribe<BossActivationEvent>(OnBossActivationEvent);
+        EventManager.Instance?.Subscribe<BossDamageEvent>(OnBossDamageEvent);
+        EventManager.Instance?.Subscribe<EnemyDeathEvent>(OnEnemyDeathEvent);
     }
 
     // 通过事件中心处理
@@ -128,7 +134,7 @@ public class UIManager : MonoBehaviour, IUIService
         }
         Time.timeScale = isPaused ? 0f : 1f;
 
-        eventManager?.Publish(new GamePauseEvent { isPaused = isPaused });
+        EventManager.Instance?.Publish(new GamePauseEvent { isPaused = isPaused });
     }
 
     #region Boss血条管理
@@ -193,7 +199,7 @@ public class UIManager : MonoBehaviour, IUIService
     public void RestartGame()
     {
         // 清空所有事件订阅，防止重新开始时事件累积
-        eventManager?.ClearAllEvents();
+        EventManager.Instance?.ClearAllEvents();
 
         // 清空所有服务，防止重新开始时服务累积
         ServiceLocator.Instance?.ClearAll();
@@ -216,7 +222,7 @@ public class UIManager : MonoBehaviour, IUIService
     public void ReturnToMainMenu()
     {
         // 清空所有事件订阅，防止返回主菜单时事件累积
-        eventManager?.ClearAllEvents();
+        EventManager.Instance?.ClearAllEvents();
 
         // 清空所有服务，防止返回主菜单时服务累积
         ServiceLocator.Instance?.ClearAll();
@@ -245,14 +251,14 @@ public class UIManager : MonoBehaviour, IUIService
         }
 
         // 取消事件中心订阅
-        if (eventManager != null)
+        if (EventManager.Instance != null)
         {
-            eventManager.Unsubscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
-            eventManager.Unsubscribe<PlayerHealEvent>(OnPlayerHealEvent);
-            eventManager.Unsubscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
-            eventManager.Unsubscribe<BossActivationEvent>(OnBossActivationEvent);
-            eventManager.Unsubscribe<BossDamageEvent>(OnBossDamageEvent);
-            eventManager.Unsubscribe<EnemyDeathEvent>(OnEnemyDeathEvent);
+            EventManager.Instance.Unsubscribe<PlayerDamageEvent>(OnPlayerDamageEvent);
+            EventManager.Instance.Unsubscribe<PlayerHealEvent>(OnPlayerHealEvent);
+            EventManager.Instance.Unsubscribe<PlayerDeathEvent>(OnPlayerDeathEvent);
+            EventManager.Instance.Unsubscribe<BossActivationEvent>(OnBossActivationEvent);
+            EventManager.Instance.Unsubscribe<BossDamageEvent>(OnBossDamageEvent);
+            EventManager.Instance.Unsubscribe<EnemyDeathEvent>(OnEnemyDeathEvent);
         }
     }
 }

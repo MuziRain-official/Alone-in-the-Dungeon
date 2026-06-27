@@ -22,7 +22,8 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnBecameInvisible()
     {
-        Destroy(gameObject);
+        // 延迟3秒销毁，让子弹飞出屏幕后仍可见一段时间
+        Destroy(gameObject, 3f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

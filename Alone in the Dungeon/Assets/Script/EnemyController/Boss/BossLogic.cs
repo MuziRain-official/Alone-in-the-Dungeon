@@ -6,7 +6,7 @@ using EnemyController;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(EnemyHealth))]
-public class BossLogic : MonoBehaviour
+public class BossLogic : MonoBehaviour, IGameModule
 {
     [Header("固定点设置")]
     public Transform[] movePoints;           // 4个固定点
@@ -72,8 +72,10 @@ public class BossLogic : MonoBehaviour
     // 音效播放状态
     private bool hasPlayedHalfHealthSfx = false;
 
-    // 事件管理
-    private EventManager eventManager;
+    void Awake()
+    {
+        LifecycleManager.RegisterModule(this);
+    }
 
     void Start()
     {
@@ -81,18 +83,22 @@ public class BossLogic : MonoBehaviour
         anim = GetComponent<Animator>();
         enemyHealth = GetComponent<EnemyHealth>();
 
-        // 订阅受伤事件
+        // 订阅受伤事件（C# 原生事件，非 EventManager 事件）
         enemyHealth.OnDamaged += OnEnemyDamaged;
         enemyHealth.OnDied += OnEnemyDied;
 
-        // 获取EventManager
-        eventManager = EventManager.Instance;
-
-        // 订阅玩家进入房间事件
-        eventManager?.Subscribe<PlayerEnterRoomEvent>(OnPlayerEnterRoom);
-
         // 获取玩家引用
         TryGetPlayerTransform();
+    }
+
+    public void RegisterEvents()
+    {
+        EventManager.Instance.Register<BossActivationEvent>();
+    }
+
+    public void SubscribeEvents()
+    {
+        EventManager.Instance?.Subscribe<PlayerEnterRoomEvent>(OnPlayerEnterRoom);
     }
 
     void OnDestroy()
@@ -105,7 +111,7 @@ public class BossLogic : MonoBehaviour
         }
 
         // 取消订阅房间事件
-        eventManager?.Unsubscribe<PlayerEnterRoomEvent>(OnPlayerEnterRoom);
+        EventManager.Instance?.Unsubscribe<PlayerEnterRoomEvent>(OnPlayerEnterRoom);
     }
 
     private void OnPlayerEnterRoom(PlayerEnterRoomEvent evt)
@@ -136,7 +142,7 @@ public class BossLogic : MonoBehaviour
         }
 
         // 发布Boss激活事件（用于显示血条）
-        eventManager?.Publish(new GameFramework.BossActivationEvent
+        EventManager.Instance?.Publish(new BossActivationEvent
         {
             boss = gameObject,
             bossHealth = enemyHealth

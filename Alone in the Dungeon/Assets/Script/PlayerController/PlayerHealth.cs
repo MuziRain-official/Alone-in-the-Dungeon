@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
+using GameFramework;
 
 namespace PlayerController
 {
     /// <summary>
     /// 玩家生命值管理 - 实现 IDamageable 和 IHealable 接口
     /// </summary>
-    public class PlayerHealth : MonoBehaviour, GameFramework.IDamageable, GameFramework.IHealable
+    public class PlayerHealth : MonoBehaviour, IDamageable, IHealable, IGameModule
     {
         public static PlayerHealth Instance { get; private set; }
 
@@ -33,12 +34,24 @@ namespace PlayerController
         {
             Instance = this;
 
+            // 注册到生命周期管理器
+            LifecycleManager.RegisterModule(this);
+
             // 通过服务定位器注册玩家服务（在 Awake 中注册，确保敌人初始化时能找到）
-            if (GameFramework.ServiceLocator.Instance != null)
+            if (ServiceLocator.Instance != null)
             {
-                GameFramework.ServiceLocator.Instance.Register(new PlayerProvider(this));
+                ServiceLocator.Instance.Register(new PlayerProvider(this));
             }
         }
+
+        public void RegisterEvents()
+        {
+            EventManager.Instance.Register<PlayerDamageEvent>();
+            EventManager.Instance.Register<PlayerDeathEvent>();
+            EventManager.Instance.Register<PlayerHealEvent>();
+        }
+
+        public void SubscribeEvents() { }
 
         void Start()
         {
@@ -85,7 +98,7 @@ namespace PlayerController
             OnDamage?.Invoke(damage);
 
             // 通过事件中心发布受伤事件
-            GameFramework.EventManager.Instance?.Publish(new GameFramework.PlayerDamageEvent
+            EventManager.Instance?.Publish(new PlayerDamageEvent
             {
                 damage = damage,
                 currentHealth = currentHealth,
@@ -115,7 +128,7 @@ namespace PlayerController
             }
 
             // 通过事件中心发布死亡事件
-            GameFramework.EventManager.Instance?.Publish(new GameFramework.PlayerDeathEvent());
+            EventManager.Instance?.Publish(new PlayerDeathEvent());
 
             // 延迟销毁，让订阅者有时间响应
             Destroy(gameObject, 0.1f);
@@ -146,7 +159,7 @@ namespace PlayerController
             OnHeal?.Invoke(healAmount);
 
             // 通过事件中心发布治愈事件
-            GameFramework.EventManager.Instance?.Publish(new GameFramework.PlayerHealEvent
+            EventManager.Instance?.Publish(new PlayerHealEvent
             {
                 healAmount = healAmount,
                 currentHealth = currentHealth,

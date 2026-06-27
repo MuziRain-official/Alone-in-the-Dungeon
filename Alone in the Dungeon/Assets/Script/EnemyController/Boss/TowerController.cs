@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using GameFramework;
 
 /// <summary>
 /// Boss房间的塔楼控制器
@@ -109,13 +110,13 @@ public class TowerController : MonoBehaviour
     public void ReturnToMainMenu()
     {
         // 清空所有事件订阅，防止返回主菜单时事件累积
-        GameFramework.EventManager.Instance?.ClearAllEvents();
+        EventManager.Instance?.ClearAllEvents();
 
         // 清空所有服务，防止返回主菜单时服务累积
-        GameFramework.ServiceLocator.Instance?.ClearAll();
+        ServiceLocator.Instance?.ClearAll();
 
         // 停止背景音乐
-        var audioService = GameFramework.ServiceLocator.Instance?.Get<GameFramework.IAudioService>();
+        var audioService = ServiceLocator.Instance?.Get<IAudioService>();
         if (audioService != null)
         {
             audioService.StopMusic();
